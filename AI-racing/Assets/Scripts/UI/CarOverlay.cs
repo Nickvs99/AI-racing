@@ -10,6 +10,6 @@ public class CarOverlay : MonoBehaviour
     void Update()
     {
         speedometer.SetDisplay(carManager);
-        carInputDisplay.SetDisplay(carManager);
+        carInputDisplay.SetDisplay(carManager.carInput);
     }
 }

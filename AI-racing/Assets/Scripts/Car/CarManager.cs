@@ -32,7 +32,7 @@ public class CarManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        engine.ApplyForce(carInput.accelerationInput, wheels);
+        engine.ApplyForce(carInput.engineInput, wheels);
         brakes.ApplyForce(carInput.brakeInput, wheels);
         steeringWheel.ApplySteeringAngle(carInput.steerInput, wheels);
     }

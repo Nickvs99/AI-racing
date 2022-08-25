@@ -5,7 +5,7 @@ using UnityEngine;
 public struct CarInput
 {
     // Ranges from -1 (reverse) to 1 (acceleration)
-    public float accelerationInput;
+    public float engineInput;
     
     // Ranges from 0 (no brakes) to 1 (max brakes)
     public float brakeInput;
@@ -13,9 +13,9 @@ public struct CarInput
     // Ranges from -1 (left) to 1 (right)
     public float steerInput;
 
-    public CarInput(float _accelerationInput, float _brakeInput, float _steerInput)
+    public CarInput(float _engineInput, float _brakeInput, float _steerInput)
     {
-        accelerationInput = _accelerationInput;
+        engineInput = _engineInput;
         brakeInput = _brakeInput;
         steerInput = _steerInput;
     }

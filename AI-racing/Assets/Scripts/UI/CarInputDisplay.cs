@@ -3,25 +3,60 @@ using UnityEngine.UI;
 
 public class CarInputDisplay : MonoBehaviour
 {
-    [SerializeField] private Image arrow;
+    [SerializeField] private Image steeringInputElement;
+    [SerializeField] private Image engineInputElement;
+    [SerializeField] private Image brakeInputElement;
 
-    private RectTransform rectTransform;
+    private RectTransform steeringRectTransform;
+    private RectTransform engineRectTransform;
+    private RectTransform brakeRectTransform;
+
 
     private void Awake()
     {
-        rectTransform = arrow.GetComponent<RectTransform>();
+        steeringRectTransform = steeringInputElement.GetComponent<RectTransform>();
+        engineRectTransform = engineInputElement.GetComponent<RectTransform>();
+        brakeRectTransform = brakeInputElement.GetComponent<RectTransform>();
+
     }
 
-    public void SetDisplay(CarManager carManager)
+    public void SetDisplay(CarInput carInput)
     {
-        Vector2 input = carManager.carInput;
+        UpdateLocalScaleX(steeringRectTransform, carInput.steerInput);
+        UpdateLocalScaleY(engineRectTransform, Mathf.Abs(carInput.engineInput));
+        UpdateLocalScaleY(brakeRectTransform, carInput.brakeInput);
 
-        float yScale = input.magnitude;
+        UpdateColor(engineInputElement, carInput.engineInput);
+    }
 
-        // Calculate the angle against the up vector. This is because a 0 rotation points straight up.
-        float angle = Vector2.SignedAngle(Vector2.up, input);
+    public void UpdateLocalScaleX(RectTransform element, float value)
+    {
+        element.localScale = new Vector3(
+            value,
+            element.localScale.y,
+            element.localScale.z
+        );
+    }
 
-        rectTransform.localScale = new Vector3(rectTransform.localScale.x, yScale, rectTransform.localScale.z);
-        rectTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+    public void UpdateLocalScaleY(RectTransform element, float value)
+    {
+        element.localScale = new Vector3(
+            element.localScale.x,
+            value,
+            element.localScale.z
+        );
+    }
+
+    public void UpdateColor(Image image, float value)
+    {
+        // TODO colors shouldn't be hardcoded
+        if (value >= 0)
+        {
+            image.color = new Color32(254, 186, 50, 255);
+        }
+        else
+        {
+            image.color = new Color32(42, 43, 44, 255);
+        }
     }
 }

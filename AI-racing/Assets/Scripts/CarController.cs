@@ -15,21 +15,21 @@ public class CarController : MonoBehaviour
 
     private void Update()
     {
-        float accelerationInput;
+        float engineInput;
         float brakeInput;
         if (manager.speed >= 0)
         {
-            accelerationInput = Input.GetAxis("Positive Acceleration");
+            engineInput = Input.GetAxis("Positive Acceleration");
             brakeInput = Input.GetAxis("Negative Acceleration");
         }
         else
         {
-            accelerationInput = -Input.GetAxis("Negative Acceleration");
+            engineInput = -Input.GetAxis("Negative Acceleration");
             brakeInput = Input.GetAxis("Positive Acceleration");
         }
 
         manager.carInput = new CarInput(
-            accelerationInput,
+            engineInput,
             brakeInput,
             Input.GetAxis("Steering")
        );
