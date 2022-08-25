@@ -4155,6 +4155,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 896008054905639329, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: maxForce
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1248598967819147742, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
       propertyPath: m_Name
       value: Car

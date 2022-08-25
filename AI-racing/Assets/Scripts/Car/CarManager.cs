@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(Engine)), RequireComponent(typeof(Brakes)), RequireComponent(typeof(SteeringWheel))]
 public class CarManager : MonoBehaviour
 {
-    public Vector2 carInput { get; set; }
+    public CarInput carInput { get; set; }
 
     private Rigidbody rb;
 
@@ -11,9 +11,6 @@ public class CarManager : MonoBehaviour
     private Brakes brakes;
     private SteeringWheel steeringWheel;
     private Wheel[] wheels;
-
-    // TEMP, will be combined in the carInput 
-    public bool isBreaking;
 
     public float speed;
 
@@ -35,10 +32,11 @@ public class CarManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        engine.ApplyForce(carInput.y, wheels);
-        brakes.ApplyForce(isBreaking ? 1 : 0, wheels);
-        steeringWheel.ApplySteeringAngle(carInput.x, wheels);
+        engine.ApplyForce(carInput.accelerationInput, wheels);
+        brakes.ApplyForce(carInput.brakeInput, wheels);
+        steeringWheel.ApplySteeringAngle(carInput.steerInput, wheels);
     }
+
     public float CalcSpeed()
     {
         // The speed is the displacement of the rigidbody projected on the forward direction

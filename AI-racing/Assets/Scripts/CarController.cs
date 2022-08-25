@@ -15,8 +15,23 @@ public class CarController : MonoBehaviour
 
     private void Update()
     {
-        // TEMP, will be set through the car controller
-        manager.carInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        manager.isBreaking = Input.GetKey(KeyCode.Space);
+        float accelerationInput;
+        float brakeInput;
+        if (manager.speed >= 0)
+        {
+            accelerationInput = Input.GetAxis("Positive Acceleration");
+            brakeInput = Input.GetAxis("Negative Acceleration");
+        }
+        else
+        {
+            accelerationInput = -Input.GetAxis("Negative Acceleration");
+            brakeInput = Input.GetAxis("Positive Acceleration");
+        }
+
+        manager.carInput = new CarInput(
+            accelerationInput,
+            brakeInput,
+            Input.GetAxis("Steering")
+       );
     }
 }
