@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &988299908261310429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8529867403688715313}
+  - component: {fileID: 6242902686141950564}
+  m_Layer: 0
+  m_Name: Hungaroring
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8529867403688715313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988299908261310429}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6242902686141950564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988299908261310429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5ac92bc18f545cc84cd886ece82b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorData:
+    _bezierPath:
+      points:
+      - {x: -2, y: 0, z: 0}
+      - {x: -1.850831, y: 0, z: 3.802975}
+      - {x: -1.9235954, y: 0, z: 4.3869023}
+      - {x: -1.0281639, y: 0, z: 4.389589}
+      - {x: -0.17584234, y: 0, z: 4.392146}
+      - {x: -0.63869065, y: 0, z: 2.740235}
+      - {x: 0.11018658, y: 0, z: 2.7239318}
+      - {x: 0.84060955, y: 0, z: 2.7080302}
+      - {x: 0.7087343, y: 0, z: 3.6789575}
+      - {x: 1.0497551, y: 0, z: 3.7766523}
+      - {x: 4.361617, y: 0, z: 4.7254267}
+      - {x: 4.3719115, y: 0, z: 4.1370654}
+      - {x: 4.4680777, y: 0, z: 4.473172}
+      - {x: 5.070092, y: 0, z: 6.5772476}
+      - {x: 5.2230177, y: 0, z: 6.0996127}
+      - {x: 5.5853624, y: 0, z: 6.0859704}
+      - {x: 6.132882, y: 0, z: 6.0653563}
+      - {x: 5.997863, y: 0, z: 4.098256}
+      - {x: 5.80334, y: 0, z: 3.810464}
+      - {x: 5.6385093, y: 0, z: 3.5666013}
+      - {x: 5.319398, y: 0, z: 3.6959362}
+      - {x: 5.057746, y: 0, z: 3.7906644}
+      - {x: 4.8802714, y: 0, z: 3.854917}
+      - {x: 4.32586, y: 0, z: 2.441161}
+      - {x: 4.4651766, y: 0, z: 2.226825}
+      - {x: 4.6223273, y: 0, z: 1.9850513}
+      - {x: 5.435434, y: 0, z: 1.7131951}
+      - {x: 5.5189824, y: 0, z: 1.3146558}
+      - {x: 5.597068, y: 0, z: 0.94217706}
+      - {x: 4.6587877, y: 0, z: 0.78145856}
+      - {x: 4.4659414, y: 0, z: 0.22392333}
+      - {x: 4.234083, y: 0, z: -0.44639826}
+      - {x: 4.3509035, y: 0, z: -1.1453621}
+      - {x: 3.8649244, y: 0, z: -1.2026151}
+      - {x: 1.726917, y: 0, z: -1.4544929}
+      - {x: 2.8112555, y: 0, z: -1.3159205}
+      - {x: 0.30673313, y: 0, z: -1.5399742}
+      - {x: -0.13358364, y: 0, z: -1.5793648}
+      - {x: 0.20468819, y: 0, z: 0.25596473}
+      - {x: -0.37668514, y: 0, z: 0.28333983}
+      - {x: -1.3021011, y: 0, z: 0.32691485}
+      - {x: -0.6187763, y: 0, z: -1.6022468}
+      - {x: -1.3568068, y: 0, z: -1.5884333}
+      - {x: -1.8751718, y: 0, z: -1.5787312}
+      - {x: -2.0335839, y: 0, z: -0.85619885}
+      isClosed: 1
+      space: 2
+      controlMode: 0
+      autoControlLength: 0.3
+      boundsUpToDate: 0
+      bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 2, y: 0.14433756, z: 0}
+      perAnchorNormalsAngle:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      globalNormalsAngle: 0
+      flipNormals: 0
+    vertexPathUpToDate: 1
+    vertexPathMaxAngleError: 0.3
+    vertexPathMinVertexSpacing: 0.01
+    showTransformTool: 1
+    showPathBounds: 0
+    showPerSegmentBounds: 0
+    displayAnchorPoints: 1
+    displayControlPoints: 1
+    bezierHandleScale: 1
+    globalDisplaySettingsFoldout: 0
+    keepConstantHandleSize: 1
+    showNormalsInVertexMode: 0
+    showBezierPathInVertexMode: 0
+    showDisplayOptions: 1
+    showPathOptions: 1
+    showVertexPathDisplayOptions: 0
+    showVertexPathOptions: 1
+    showNormals: 0
+    showNormalsHelpInfo: 0
+    tabIndex: 0
+  initialized: 1
