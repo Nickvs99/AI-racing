@@ -1,10 +1,18 @@
 using PathCreation;
 using UnityEngine;
 
+[RequireComponent(typeof(LapTracker))]
 public class Agent : MonoBehaviour
 {
     [SerializeField] PathCreator pathCreator;
     public VertexPath path;
+
+    private LapTracker lapTracker;
+
+    private void Awake()
+    {
+        lapTracker = GetComponent<LapTracker>();
+    }
 
     void Start()
     {
@@ -19,10 +27,16 @@ public class Agent : MonoBehaviour
         transform.position += transform.forward * 0.1f;
     }
 
+    // Should only be computed at the end of a run. Should not be used every frame
     public float CalcFitness()
-    {   
-        // Should only be computed at the end of a run. Should not be used every frame
+    {
+        // Fitness for completed laps
+        float lapFitness = lapTracker.currentLap * (path.NumPoints - 1);
+
+        // Fitness for partial laps
         TimeOnPathData data = path.CalculateClosestPointOnPathData(transform.position);
-        return data.previousIndex + data.percentBetweenIndices;
+        float partialFitness = data.previousIndex + data.percentBetweenIndices;
+
+        return lapFitness + partialFitness;
     }
 }
