@@ -9,6 +9,9 @@ public class Agent : MonoBehaviour
 
     private LapTracker lapTracker;
 
+    public float crashPenalty = 1000;
+    private bool hasCrashed = false;
+
     private void Awake()
     {
         lapTracker = GetComponent<LapTracker>();
@@ -27,6 +30,14 @@ public class Agent : MonoBehaviour
         transform.position += transform.forward * 0.1f;
     }
 
+    private void FixedUpdate()
+    {
+        if(!hasCrashed && transform.position.y < -1)
+        {
+            hasCrashed = true;
+        }
+    }
+
     // Should only be computed at the end of a run. Should not be used every frame
     public float CalcFitness()
     {
@@ -37,6 +48,8 @@ public class Agent : MonoBehaviour
         TimeOnPathData data = path.CalculateClosestPointOnPathData(transform.position);
         float partialFitness = data.previousIndex + data.percentBetweenIndices;
 
-        return lapFitness + partialFitness;
+        float penalty = hasCrashed ? crashPenalty : 0f;
+
+        return lapFitness + partialFitness - penalty;
     }
 }
