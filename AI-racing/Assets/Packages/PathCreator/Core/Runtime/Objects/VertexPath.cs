@@ -295,7 +295,7 @@ namespace PathCreation {
         }
 
         /// Calculate time data for closest point on the path from given world point
-        TimeOnPathData CalculateClosestPointOnPathData (Vector3 worldPoint) {
+        public TimeOnPathData CalculateClosestPointOnPathData (Vector3 worldPoint) {
             float minSqrDst = float.MaxValue;
             Vector3 closestPoint = Vector3.zero;
             int closestSegmentIndexA = 0;
@@ -326,20 +326,21 @@ namespace PathCreation {
             return new TimeOnPathData (closestSegmentIndexA, closestSegmentIndexB, t);
         }
 
-        public struct TimeOnPathData {
-            public readonly int previousIndex;
-            public readonly int nextIndex;
-            public readonly float percentBetweenIndices;
-
-            public TimeOnPathData (int prev, int next, float percentBetweenIndices) {
-                this.previousIndex = prev;
-                this.nextIndex = next;
-                this.percentBetweenIndices = percentBetweenIndices;
-            }
-        }
-
         #endregion
 
     }
 
+    public struct TimeOnPathData
+    {
+        public readonly int previousIndex;
+        public readonly int nextIndex;
+        public readonly float percentBetweenIndices;
+
+        public TimeOnPathData(int prev, int next, float percentBetweenIndices)
+        {
+            this.previousIndex = prev;
+            this.nextIndex = next;
+            this.percentBetweenIndices = percentBetweenIndices;
+        }
+    }
 }
