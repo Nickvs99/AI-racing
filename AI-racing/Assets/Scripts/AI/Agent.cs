@@ -13,6 +13,10 @@ public class Agent : MonoBehaviour
         // Initialize agent transform
         transform.position = path.GetPoint(0);
         transform.LookAt(path.GetPoint(1));
+
+        // Move agent slightly ahead, oterwise the CalculateClosestPointOnPathData
+        // would think it is at the end of the lap
+        transform.position += transform.forward * 0.1f;
     }
 
     public float CalcFitness()
