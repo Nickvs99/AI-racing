@@ -22,8 +22,13 @@ public class NeuralNetworkLayer
 
         for(int i = 0; i < nOutputs; i++)
         {
-            // TODO calculate the output of the node given the inputs
-            outputs[i] = 0.5f;
+            float value = 0;
+            for(int j = 0; j < nInputs; j++)
+            {
+                value += weights[j, i] * inputs[j];
+            }
+
+            outputs[i] = value + biases[i];
         }
 
         return outputs;
