@@ -1,12 +1,13 @@
 using PathCreation;
 using UnityEngine;
 
-[RequireComponent(typeof(LapTracker))]
+[RequireComponent(typeof(LapTracker), typeof(CarManager))]
 public class Agent : MonoBehaviour
 {
     [SerializeField] PathCreator pathCreator;
     public VertexPath path;
 
+    private CarManager carManager;
     private LapTracker lapTracker;
 
     public float crashPenalty = 1000;
@@ -16,8 +17,11 @@ public class Agent : MonoBehaviour
     [SerializeField] private float fov = 120;
     [SerializeField] private int nrays = 5;
 
+    private NeuralNetwork neuralNetwork;
+
     private void Awake()
     {
+        carManager = GetComponent<CarManager>();
         lapTracker = GetComponent<LapTracker>();
     }
 
@@ -32,16 +36,26 @@ public class Agent : MonoBehaviour
         // Move agent slightly ahead, oterwise the CalculateClosestPointOnPathData
         // would think it is at the end of the lap
         transform.position += transform.forward * 0.1f;
+
+        neuralNetwork = new NeuralNetwork(new int[] { 5, 3 });
     }
 
     private void FixedUpdate()
     {
-        DrawVision();
+        float[] rayDistances = GetVisionDistances();
 
         if(!hasCrashed && transform.position.y < -1)
         {
             hasCrashed = true;
         }
+
+        carManager.carInput = ComputeCarInput(rayDistances);
+    }
+
+    private CarInput ComputeCarInput(float [] neuralNetworkInput)
+    {
+        float[] neuralNetworkOutput = neuralNetwork.ComputeOutputs(neuralNetworkInput);
+        return new CarInput(neuralNetworkOutput[0], neuralNetworkOutput[1], neuralNetworkOutput[2]);
     }
 
     // Should only be computed at the end of a run. Should not be used every frame
@@ -59,8 +73,10 @@ public class Agent : MonoBehaviour
         return lapFitness + partialFitness - penalty;
     }
 
-    private void DrawVision()
+    private float[] GetVisionDistances()
     {
+        float[] visionDistances = new float[nrays];
+
         float startAngle = -fov / 2;
         float angleIncrement = fov / (nrays - 1);
 
@@ -77,12 +93,15 @@ public class Agent : MonoBehaviour
             if(Physics.Raycast(origin, dir, out hit, Mathf.Infinity, mask))
             {
                 DrawVisionRay(origin, dir, hit.distance);
+                visionDistances[i] = hit.distance;
             }
             else
             {
                 Debug.LogWarning("Ray fails to see anyting", gameObject);
             }
         }
+
+        return visionDistances;
     }
 
     private void DrawVisionRay(Vector3 origin, Vector3 dir, float distance)
