@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public struct CarInput
@@ -15,8 +13,8 @@ public struct CarInput
 
     public CarInput(float _engineInput, float _brakeInput, float _steerInput)
     {
-        engineInput = _engineInput;
-        brakeInput = _brakeInput;
-        steerInput = _steerInput;
+        engineInput = Mathf.Clamp(_engineInput, -1, 1);
+        brakeInput = Mathf.Clamp(_brakeInput, 0, 1);
+        steerInput = Mathf.Clamp(_steerInput, -1, 1);
     }
 }
