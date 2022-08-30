@@ -41,7 +41,7 @@ public class Agent : MonoBehaviour
         // would think it is at the end of the lap
         transform.position += transform.forward * 0.1f;
 
-        List<int> layerSizes = new List<int> { nrays }; // Input (vision)
+        List<int> layerSizes = new List<int> { nrays + 1 }; // Input (vision + car speed)
         layerSizes.AddRange(hiddenLayerSizes);      // Hidden layers
         layerSizes.Add(3);                          // Output (engine, brake, steering)
         
@@ -53,14 +53,22 @@ public class Agent : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float[] rayDistances = GetVisionDistances();
+        float[] neuralNetworkInput = new float[neuralNetwork.GetLayerSize(0)];
 
+        float[] rayDistances = GetVisionDistances();
+        for(int i = 0; i < rayDistances.Length; i++)
+        {
+            neuralNetworkInput[i] = rayDistances[i];
+        }
+
+        neuralNetworkInput[neuralNetworkInput.Length - 1] = carManager.speed;
+
+        carManager.carInput = ComputeCarInput(neuralNetworkInput);
+        
         if(!hasCrashed && transform.position.y < -1)
         {
             hasCrashed = true;
         }
-
-        carManager.carInput = ComputeCarInput(rayDistances);
     }
 
     private CarInput ComputeCarInput(float [] neuralNetworkInput)

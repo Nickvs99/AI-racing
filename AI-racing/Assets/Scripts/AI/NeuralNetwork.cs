@@ -34,6 +34,11 @@ public class NeuralNetwork
         }
     }
 
+    public int GetLayerSize(int i)
+    {
+        return layerSizes[i];
+    }
+
     public float[] ComputeOutputs(float[] inputs)
     {
         foreach(NeuralNetworkLayer layer in layers)
