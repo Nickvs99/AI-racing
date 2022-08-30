@@ -1,3 +1,4 @@
+using System;
 
 public class NeuralNetwork
 {
@@ -5,8 +6,18 @@ public class NeuralNetwork
     private int[] layerSizes;
     private NeuralNetworkLayer[] layers;
 
-    public NeuralNetwork(int[] _layerSizes)
+    public NeuralNetwork(int[] _layerSizes, Func<float> weightInitMethod = null, Func<float> biasInitMethod = null)
     {
+        if(weightInitMethod == null)
+        {
+            weightInitMethod = DefaultWeightInitMethod;
+        }
+
+        if(biasInitMethod == null)
+        {
+            biasInitMethod = DefaultBiasInitMethod;
+        }
+
         layerSizes = _layerSizes;
         nLayers = layerSizes.Length;
 
@@ -14,7 +25,7 @@ public class NeuralNetwork
         layers = new NeuralNetworkLayer[nLayers - 1];
         for (int i = 0; i < layers.Length; i++)
         {
-            layers[i] = new NeuralNetworkLayer(layerSizes[i], layerSizes[i + 1]);
+            layers[i] = new NeuralNetworkLayer(layerSizes[i], layerSizes[i + 1], weightInitMethod, biasInitMethod);
         }
     }
 
@@ -27,5 +38,15 @@ public class NeuralNetwork
         }
 
         return inputs;
+    }
+
+    public float DefaultWeightInitMethod()
+    {
+        return 1f;
+    }
+
+    public float DefaultBiasInitMethod()
+    {
+        return 0f;
     }
 }
