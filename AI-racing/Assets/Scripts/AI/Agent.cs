@@ -37,7 +37,10 @@ public class Agent : MonoBehaviour
         // would think it is at the end of the lap
         transform.position += transform.forward * 0.1f;
 
-        neuralNetwork = new NeuralNetwork(new int[] { 5, 3 }, weightInitMethod: WeightInitMethod);
+        neuralNetwork = new NeuralNetwork(new int[] { 5, 3 },
+            weightInitMethod: WeightInitMethod,
+            activationMethod: ActivationMethod
+        );
     }
 
     private void FixedUpdate()
@@ -126,5 +129,10 @@ public class Agent : MonoBehaviour
     private float WeightInitMethod()
     {
         return Random.Range(-1f, 1f);
+    }
+
+    private float ActivationMethod(float x)
+    {
+        return x;
     }
 }

@@ -8,16 +8,20 @@ public class NeuralNetworkLayer
     private float[,] weights;
     private float[] biases;
 
-    public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod)
+    Func<float, float> ActivationMethod;
+
+    public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod, Func<float, float> activationMethod)
     {
         nInputs = _nInputs;
         nOutputs = _nOutputs;
 
         weights = InitWeights(weightInitMethod);
         biases = InitBiases(biasInitMethod);
+
+        ActivationMethod = activationMethod;
     }
 
-    private float[,] InitWeights(Func<float> initMethod)
+    private float[,] InitWeights(Func<float> InitMethod)
     {
         float[,] _weights = new float[nInputs, nOutputs];
 
@@ -25,20 +29,20 @@ public class NeuralNetworkLayer
         {
             for(int j = 0; j < _weights.GetLength(1); j++)
             {
-                _weights[i, j] = initMethod();
+                _weights[i, j] = InitMethod();
             }
         }
 
         return _weights;
     }
 
-    private float[] InitBiases(Func<float> initMethod)
+    private float[] InitBiases(Func<float> InitMethod)
     {
         float[] _biases = new float[nOutputs];
 
         for(int i = 0; i < _biases.Length; i++)
         {
-            _biases[i] = initMethod();
+            _biases[i] = InitMethod();
         }
 
         return _biases;
@@ -56,7 +60,7 @@ public class NeuralNetworkLayer
                 value += weights[j, i] * inputs[j];
             }
 
-            outputs[i] = value + biases[i];
+            outputs[i] = ActivationMethod(value + biases[i]);
         }
 
         return outputs;
