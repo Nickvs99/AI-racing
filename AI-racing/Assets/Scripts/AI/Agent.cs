@@ -1,4 +1,5 @@
 using PathCreation;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LapTracker), typeof(CarManager))]
@@ -17,6 +18,9 @@ public class Agent : MonoBehaviour
     [SerializeField] private float fov = 120;
     [SerializeField] private int nrays = 5;
 
+    [Header("Neural Network")]
+    [SerializeField] private int[] hiddenLayerSizes;
+    
     private NeuralNetwork neuralNetwork;
 
     private void Awake()
@@ -37,7 +41,11 @@ public class Agent : MonoBehaviour
         // would think it is at the end of the lap
         transform.position += transform.forward * 0.1f;
 
-        neuralNetwork = new NeuralNetwork(new int[] { 5, 3 },
+        List<int> layerSizes = new List<int> { nrays }; // Input (vision)
+        layerSizes.AddRange(hiddenLayerSizes);      // Hidden layers
+        layerSizes.Add(3);                          // Output (engine, brake, steering)
+        
+        neuralNetwork = new NeuralNetwork(layerSizes.ToArray(),
             weightInitMethod: WeightInitMethod,
             activationMethod: ActivationMethod
         );
