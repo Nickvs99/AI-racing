@@ -25,6 +25,25 @@ public class CarManager : MonoBehaviour
         steeringWheel = GetComponent<SteeringWheel>();
     }
 
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        foreach(Wheel wheel in wheels)
+        {
+            wheel.Init();
+        }
+
+        carInput = new CarInput(0f, 0f, 0f);
+        speed = 0f;
+    }
+
     private void Update()
     {
         speed = CalcSpeed();

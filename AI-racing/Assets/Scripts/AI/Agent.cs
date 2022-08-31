@@ -13,13 +13,14 @@ public class Agent : MonoBehaviour
 
     public float crashPenalty = 1000;
     private bool hasCrashed = false;
+    public bool hasFinished = false;
+
+    [SerializeField] public float maxFuel = 1000f;
+    [SerializeField] private float fuelLeft;
 
     [Header("Vision")]
     [SerializeField] private float fov = 120;
-    [SerializeField] private int nrays = 5;
-
-    [Header("Neural Network")]
-    [SerializeField] private int[] hiddenLayerSizes;
+    [SerializeField] public int nrays = 5;
     
     private NeuralNetwork neuralNetwork;
 
@@ -27,12 +28,28 @@ public class Agent : MonoBehaviour
     {
         carManager = GetComponent<CarManager>();
         lapTracker = GetComponent<LapTracker>();
-    }
+  }
 
     void Start()
     {
         path = pathCreator.path;
         
+        Init();
+    }
+
+    public void Init()
+    {
+        InitTransform();
+        lapTracker.Init();
+        carManager.Init();
+
+        fuelLeft = maxFuel;
+        hasFinished = false;
+        hasCrashed = false;
+    }
+
+    private void InitTransform()
+    {
         // Initialize agent transform
         transform.position = path.GetPoint(0);
         transform.LookAt(path.GetPoint(1));
@@ -40,15 +57,6 @@ public class Agent : MonoBehaviour
         // Move agent slightly ahead, oterwise the CalculateClosestPointOnPathData
         // would think it is at the end of the lap
         transform.position += transform.forward * 0.1f;
-
-        List<int> layerSizes = new List<int> { nrays + 1 }; // Input (vision + car speed)
-        layerSizes.AddRange(hiddenLayerSizes);      // Hidden layers
-        layerSizes.Add(3);                          // Output (engine, brake, steering)
-        
-        neuralNetwork = new NeuralNetwork(layerSizes.ToArray(),
-            weightInitMethod: WeightInitMethod,
-            activationMethod: ActivationMethod
-        );
     }
 
     private void FixedUpdate()
@@ -64,11 +72,23 @@ public class Agent : MonoBehaviour
         neuralNetworkInput[neuralNetworkInput.Length - 1] = carManager.speed;
 
         carManager.carInput = ComputeCarInput(neuralNetworkInput);
-        
+
         if(!hasCrashed && transform.position.y < -1)
         {
             hasCrashed = true;
         }
+
+        fuelLeft -= 1f;
+
+        if (fuelLeft < 0f || hasCrashed)
+        {
+            hasFinished = true;
+        }
+    }
+
+    public void SetNeuralNetwork(NeuralNetwork network)
+    {
+        neuralNetwork = network;
     }
 
     private CarInput ComputeCarInput(float [] neuralNetworkInput)
@@ -140,15 +160,5 @@ public class Agent : MonoBehaviour
         }
 
         Debug.DrawRay(origin, dir * distance, color);
-    }
-
-    private float WeightInitMethod()
-    {
-        return Random.Range(-1f, 1f);
-    }
-
-    private float ActivationMethod(float x)
-    {
-        return x;
     }
 }

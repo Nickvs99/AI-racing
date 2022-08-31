@@ -563,9 +563,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 33461886}
   crashPenalty: 1000
+  hasFinished: 0
+  maxFuel: 200
+  fuelLeft: 0
   fov: 60
-  nrays: 7
-  hiddenLayerSizes: 
+  nrays: 5
 --- !u!114 &782720620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1246,6 +1248,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1457292714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1457292716}
+  - component: {fileID: 1457292715}
+  m_Layer: 0
+  m_Name: Evolution Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1457292715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457292714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04c5b5ed23040a4fa1049b09bcd3a67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  populationSize: 5
+  agent: {fileID: 782720615}
+  generation: 0
+  currentAgentIndex: 0
+  hiddenLayerSizes: 
+--- !u!4 &1457292716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457292714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.6613889, y: 0.60745335, z: 111.24907}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1476716785
 GameObject:

@@ -17,6 +17,19 @@ public class Wheel : MonoBehaviour
         wheelCollider = GetComponent<WheelCollider>();
     }
 
+    private void Start()
+    {
+        Init();
+    }
+        
+    public void Init()
+    {
+        wheelCollider.brakeTorque = 0f;
+        wheelCollider.motorTorque = 0f;
+        wheelCollider.steerAngle = 0f;
+        wheelCollider.ResetSprungMasses();
+    }
+
     private void Update()
     {
         UpdateTransform();

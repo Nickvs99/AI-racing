@@ -25,8 +25,8 @@ public class LapTracker : MonoBehaviour
     void Start()
     {
         path = pathCreator.path;
-        currentLap = 0;
-        prevPosition = transform.position;
+
+        Init();
 
         Vector3 normal = path.GetNormal(0);
         finishCenter = path.GetPoint(0);
@@ -36,6 +36,12 @@ public class LapTracker : MonoBehaviour
         // Compute non changing values
         deltaX = finishB.x - finishA.x;
         deltaZ = finishB.z - finishA.z;
+    }
+
+    public void Init()
+    {
+        currentLap = 0;
+        prevPosition = transform.position;
     }
 
     private void FixedUpdate()
