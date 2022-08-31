@@ -8,6 +8,7 @@ public class EvolutionManager : MonoBehaviour
     [SerializeField] private Agent agent;
 
     private NeuralNetwork[] neuralNetworks;
+    private float[] fitnesses;
 
     public int generation;
     public int currentAgentIndex;
@@ -20,6 +21,7 @@ public class EvolutionManager : MonoBehaviour
     private void Start()
     {
         neuralNetworks = new NeuralNetwork[populationSize];
+        fitnesses = new float[populationSize];
 
         generation = 0;
         currentAgentIndex = 0;
@@ -45,11 +47,13 @@ public class EvolutionManager : MonoBehaviour
     {
         if (agent.hasFinished)
         {
-            Debug.Log(agent.CalcFitness());
+            float fitness = agent.CalcFitness();
+            fitnesses[currentAgentIndex] = fitness;
 
             // If last agent of its generation has finished, create new generation
             if(currentAgentIndex == populationSize - 1)
             {
+                Debug.Log(string.Join(", ", fitnesses));
                 neuralNetworks = CreateNextGeneration();
                 generation++;
             }
