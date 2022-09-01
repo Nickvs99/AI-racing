@@ -11,7 +11,7 @@ public class Agent : MonoBehaviour
     private CarManager carManager;
     private LapTracker lapTracker;
 
-    public float crashPenalty = 1000;
+    public float crashPenalty = 0.5f;
     private bool hasCrashed = false;
     public bool hasFinished = false;
 
@@ -107,9 +107,9 @@ public class Agent : MonoBehaviour
         TimeOnPathData data = path.CalculateClosestPointOnPathData(transform.position);
         float partialFitness = data.previousIndex + data.percentBetweenIndices;
 
-        float penalty = hasCrashed ? crashPenalty : 0f;
+        float penaltyFactor = (lapFitness + partialFitness) > 0f ? crashPenalty : 1/crashPenalty;
 
-        return lapFitness + partialFitness - penalty;
+        return (lapFitness + partialFitness) * penaltyFactor;
     }
 
     private float[] GetVisionDistances()
