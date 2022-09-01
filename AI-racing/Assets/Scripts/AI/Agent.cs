@@ -21,6 +21,13 @@ public class Agent : MonoBehaviour
     [Header("Vision")]
     [SerializeField] private float fov = 120;
     [SerializeField] public int nrays = 5;
+
+    [Header("Premature Conditions")]
+    [SerializeField] private float minAgentHeight = -1f;
+    [SerializeField] private float minSpeed = 0.001f;
+    [SerializeField] private float minSpeedMaxDuration = 100f;
+    private float minSpeedDuration;
+
     
     private NeuralNetwork neuralNetwork;
 
@@ -46,6 +53,8 @@ public class Agent : MonoBehaviour
         fuelLeft = maxFuel;
         hasFinished = false;
         hasCrashed = false;
+
+        minSpeedDuration = 0f;
     }
 
     private void InitTransform()
@@ -73,14 +82,23 @@ public class Agent : MonoBehaviour
 
         carManager.carInput = ComputeCarInput(neuralNetworkInput);
 
-        if(!hasCrashed && transform.position.y < -1)
+        if(transform.position.y < minAgentHeight)
         {
             hasCrashed = true;
         }
 
+        if(Mathf.Abs(carManager.speed) < minSpeed)
+        {
+            minSpeedDuration += 1f;
+        }
+        else
+        {
+            minSpeedDuration = 0f;
+        }
+
         fuelLeft -= 1f;
 
-        if (fuelLeft < 0f || hasCrashed)
+        if (fuelLeft < 0f || hasCrashed || minSpeedDuration >= minSpeedMaxDuration)
         {
             hasFinished = true;
         }

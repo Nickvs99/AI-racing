@@ -779,12 +779,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 33461886}
-  crashPenalty: 1000
+  crashPenalty: 0.5
   hasFinished: 0
-  maxFuel: 2000
+  maxFuel: 5000
   fuelLeft: 0
   fov: 60
   nrays: 5
+  minAgentHeight: -1
+  minSpeed: 0.01
+  minSpeedMaxDuration: 100
 --- !u!114 &782720620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1771,6 +1774,7 @@ MonoBehaviour:
   generation: 0
   currentAgentIndex: 0
   hiddenLayerSizes: 
+  mutateProbability: 0.1
 --- !u!4 &1457292716
 Transform:
   m_ObjectHideFlags: 0
