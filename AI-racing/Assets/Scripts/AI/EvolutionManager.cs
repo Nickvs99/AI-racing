@@ -1,14 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EvolutionManager : MonoBehaviour
 {
+    [SerializeField] EvolutionProgressDisplay display;
+
     [SerializeField] private int populationSize = 5;
     [SerializeField] private Agent agent;
 
     private NeuralNetwork[] neuralNetworks;
-    private float[] fitnesses;
+    public float[] fitnesses;
 
     public int generation;
     public int currentAgentIndex;
@@ -17,6 +19,9 @@ public class EvolutionManager : MonoBehaviour
     [SerializeField] private int[] hiddenLayerSizes;
     private int[] layerSizes;
 
+    float overallBest = Mathf.NegativeInfinity;
+    float overallWorst = Mathf.Infinity;
+    float overallBestAvg = Mathf.NegativeInfinity;
 
     private void Start()
     {
@@ -41,6 +46,10 @@ public class EvolutionManager : MonoBehaviour
         }
 
         agent.SetNeuralNetwork(neuralNetworks[0]);
+
+        display.UpdateGenerationProgressField(generation, currentAgentIndex);
+        display.UpdatePreviousGenerationField(0f, 0f, 0f);
+        display.UpdateOverallField(0f, 0f, 0f);
     }
 
     private void FixedUpdate()
@@ -53,12 +62,24 @@ public class EvolutionManager : MonoBehaviour
             // If last agent of its generation has finished, create new generation
             if(currentAgentIndex == populationSize - 1)
             {
-                Debug.Log(string.Join(", ", fitnesses));
+                float currentBest = fitnesses.Max();
+                float currentWorst = fitnesses.Min();
+                float currentAvg = fitnesses.Average();
+
+                overallBest = Mathf.Max(overallBest, currentBest);
+                overallWorst = Mathf.Min(overallWorst, currentWorst);
+                overallBestAvg = Mathf.Max(overallBestAvg, currentAvg);
+
+                display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
+                display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
+
                 neuralNetworks = CreateNextGeneration();
                 generation++;
             }
 
             currentAgentIndex = (currentAgentIndex + 1) % populationSize;
+
+            display.UpdateGenerationProgressField(generation, currentAgentIndex);
 
             agent.Init();
             agent.SetNeuralNetwork(neuralNetworks[currentAgentIndex]);
@@ -67,14 +88,54 @@ public class EvolutionManager : MonoBehaviour
 
     private NeuralNetwork[] CreateNextGeneration()
     {
+
+        NeuralNetwork[] networks = NeuralNetworkSelection();
+
+        return networks;
+    }
+
+    /// <summary>
+    /// Select the best performing neural networks. Their pick probability is proportional to their fitness difference
+    /// to the lowest fitness.
+    /// </summary>
+    /// <returns></returns>
+    private NeuralNetwork[] NeuralNetworkSelection()
+    {
         NeuralNetwork[] networks = new NeuralNetwork[populationSize];
-        
+
+        // Cumulate fitness values
+        float[] cumFitnesses = new float[populationSize];
+        float cumFitness = 0;
+
+        float worstFitness = fitnesses.Min();
+        for(int i = 0; i < populationSize; i++)
+        {
+            // Worst fitness is substracted to allow negative fitness values. Also increases probability of higher
+            // performing neural networks once all fitness values are high.
+            cumFitness += fitnesses[i] - worstFitness;
+            cumFitnesses[i] = cumFitness;
+        }
+
+        // Normalise fitness
+        for(int i=0; i < populationSize; i++)
+        {
+            cumFitnesses[i] /= cumFitness;
+        }
+
         for (int i = 0; i < populationSize; i++)
         {
-            networks[i] = new NeuralNetwork(layerSizes,
-                weightInitMethod: WeightInitMethod,
-                activationMethod: ActivationMethod
-            );
+            float r = Random.Range(0f, 1f);
+
+            // Pick a neural network based on the normalised fitness
+            int index;
+            for(index = 0; index < populationSize - 1; index++)
+            {
+                if(r < cumFitnesses[index])
+                {
+                    break;
+                }
+            }
+            networks[i] = neuralNetworks[index];
         }
 
         return networks;
