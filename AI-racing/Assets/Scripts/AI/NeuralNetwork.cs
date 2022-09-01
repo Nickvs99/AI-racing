@@ -1,5 +1,6 @@
 using System;
 
+[Serializable]
 public class NeuralNetwork
 {
     private int nLayers;
@@ -48,6 +49,19 @@ public class NeuralNetwork
         }
 
         return inputs;
+    }
+
+    public NeuralNetwork Clone()
+    {
+        return (NeuralNetwork) this.MemberwiseClone();
+    }
+
+    public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
+    {
+        for(int i = 0; i<layers.Length - 1; i++)
+        {
+            layers[i].Mutate(WeightMutateMethod, BiasMutateMethod);
+        }
     }
 
     public float DefaultWeightInitMethod()

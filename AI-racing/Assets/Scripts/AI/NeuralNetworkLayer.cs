@@ -1,5 +1,6 @@
 using System;
 
+[Serializable]
 public class NeuralNetworkLayer
 {
     private int nInputs;
@@ -48,6 +49,22 @@ public class NeuralNetworkLayer
         return _biases;
     }
 
+    public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
+    {
+        for (int i = 0; i < weights.GetLength(0); i++)
+        {
+            for (int j = 0; j < weights.GetLength(1); j++)
+            {
+                weights[i, j] = WeightMutateMethod(weights[i, j]);
+            }
+        }
+
+        for(int i = 0; i < biases.Length; i++)
+        {
+            biases[i] = BiasMutateMethod(biases[i]);
+        }
+    }
+    
     public float[] ComputeOutputs(float[] inputs)
     {
         float[] outputs = new float[nOutputs];

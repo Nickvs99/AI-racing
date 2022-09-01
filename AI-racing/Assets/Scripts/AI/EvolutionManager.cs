@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class EvolutionManager : MonoBehaviour
     [Header("Neural Network")]
     [SerializeField] private int[] hiddenLayerSizes;
     private int[] layerSizes;
+
+    public float mutateProbability = 0.1f;
 
     float overallBest = Mathf.NegativeInfinity;
     float overallWorst = Mathf.Infinity;
@@ -90,6 +93,7 @@ public class EvolutionManager : MonoBehaviour
     {
 
         NeuralNetwork[] networks = NeuralNetworkSelection();
+        MutateNetworks(networks);
 
         return networks;
     }
@@ -124,7 +128,7 @@ public class EvolutionManager : MonoBehaviour
 
         for (int i = 0; i < populationSize; i++)
         {
-            float r = Random.Range(0f, 1f);
+            float r = UnityEngine.Random.Range(0f, 1f);
 
             // Pick a neural network based on the normalised fitness
             int index;
@@ -135,15 +139,54 @@ public class EvolutionManager : MonoBehaviour
                     break;
                 }
             }
-            networks[i] = neuralNetworks[index];
+            networks[i] = neuralNetworks[index].Clone();
         }
 
         return networks;
     }
 
+    private NeuralNetwork[] MutateNetworks(NeuralNetwork[] neurals)
+    {
+        NeuralNetwork[] networks = new NeuralNetwork[neurals.Length];
+        
+        for(int i = 0; i < neurals.Length; i++)
+        {
+            MutateNetwork(neurals[i]);
+        }
+
+        return networks;
+    }
+
+    private void MutateNetwork(NeuralNetwork neuralNetwork)
+    {
+        neuralNetwork.Mutate(WeightMutateMethod, BiasMutateMethod);
+    }
+
+    private float WeightMutateMethod(float weight)
+    {
+        float mutation = 0;
+        float r = UnityEngine.Random.Range(0f, 1f);
+        if(r < mutateProbability)
+        {
+            mutation = UnityEngine.Random.Range(-0.1f, 0.1f);
+        }
+        return weight + mutation;
+    }
+
+    private float BiasMutateMethod(float bias)
+    {
+        float mutation = 0;
+        float r = UnityEngine.Random.Range(0f, 1f);
+        if (r < mutateProbability)
+        {
+            mutation = UnityEngine.Random.Range(-0.1f, 0.1f);
+        }
+        return bias + mutation;
+    }
+
     private float WeightInitMethod()
     {
-        return Random.Range(-1f, 1f);
+        return UnityEngine.Random.Range(-1f, 1f);
     }
 
     private float ActivationMethod(float x)
