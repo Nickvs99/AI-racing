@@ -1,6 +1,5 @@
 using System;
 
-[Serializable]
 public class NeuralNetworkLayer
 {
     private int nInputs;
@@ -9,6 +8,8 @@ public class NeuralNetworkLayer
     private float[,] weights;
     private float[] biases;
 
+    Func<float> WeightInitMethod;
+    Func<float> BiasInitMethod;
     Func<float, float> ActivationMethod;
 
     public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod, Func<float, float> activationMethod)
@@ -19,7 +20,19 @@ public class NeuralNetworkLayer
         weights = InitWeights(weightInitMethod);
         biases = InitBiases(biasInitMethod);
 
+        WeightInitMethod = weightInitMethod;
+        BiasInitMethod = biasInitMethod;
         ActivationMethod = activationMethod;
+    }
+
+    public NeuralNetworkLayer Clone()
+    {
+        NeuralNetworkLayer clone = new NeuralNetworkLayer(nInputs, nOutputs, WeightInitMethod, BiasInitMethod, ActivationMethod);
+        
+        Array.Copy(weights, clone.weights, weights.GetLength(0) * weights.GetLength(1));
+        Array.Copy(biases, clone.biases, biases.Length);
+
+        return clone;
     }
 
     private float[,] InitWeights(Func<float> InitMethod)
@@ -81,5 +94,21 @@ public class NeuralNetworkLayer
         }
 
         return outputs;
+    }
+
+    public (float, float) ComputeTotal()
+    {
+        float weightTotal = 0;
+        float biasTotal = 0;
+        foreach(float weight in weights)
+        {
+            weightTotal += weight;
+        }
+        foreach(float bias in biases)
+        {
+            biasTotal += bias;
+        }
+
+        return (weightTotal, biasTotal);
     }
 }

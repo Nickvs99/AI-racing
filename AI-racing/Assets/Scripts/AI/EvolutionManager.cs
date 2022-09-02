@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -34,12 +33,14 @@ public class EvolutionManager : MonoBehaviour
         generation = 0;
         currentAgentIndex = 0;
 
+        // Determine layersizes of the neural networks
         List<int> layerSizesList = new List<int> { agent.nrays + 1 }; // Input (vision + car speed)
         layerSizesList.AddRange(hiddenLayerSizes);                    // Hidden layers
         layerSizesList.Add(3);                                        // Output (engine, brake, steering)
 
         layerSizes = layerSizesList.ToArray();
 
+        // Create initial networks
         for (int i = 0; i < populationSize; i++)
         {
             neuralNetworks[i] = new NeuralNetwork(layerSizes,
@@ -91,8 +92,8 @@ public class EvolutionManager : MonoBehaviour
 
     private NeuralNetwork[] CreateNextGeneration()
     {
-
         NeuralNetwork[] networks = NeuralNetworkSelection();
+        
         MutateNetworks(networks);
 
         return networks;
@@ -128,7 +129,7 @@ public class EvolutionManager : MonoBehaviour
 
         for (int i = 0; i < populationSize; i++)
         {
-            float r = UnityEngine.Random.Range(0f, 1f);
+            float r = Random.Range(0f, 1f);
 
             // Pick a neural network based on the normalised fitness
             int index;
@@ -139,22 +140,19 @@ public class EvolutionManager : MonoBehaviour
                     break;
                 }
             }
+
             networks[i] = neuralNetworks[index].Clone();
         }
 
         return networks;
     }
 
-    private NeuralNetwork[] MutateNetworks(NeuralNetwork[] neurals)
+    private void MutateNetworks(NeuralNetwork[] networks)
     {
-        NeuralNetwork[] networks = new NeuralNetwork[neurals.Length];
-        
-        for(int i = 0; i < neurals.Length; i++)
+        for(int i = 0; i < networks.Length; i++)
         {
-            MutateNetwork(neurals[i]);
+            MutateNetwork(networks[i]);
         }
-
-        return networks;
     }
 
     private void MutateNetwork(NeuralNetwork neuralNetwork)
@@ -165,10 +163,10 @@ public class EvolutionManager : MonoBehaviour
     private float WeightMutateMethod(float weight)
     {
         float mutation = 0;
-        float r = UnityEngine.Random.Range(0f, 1f);
+        float r = Random.Range(0f, 1f);
         if(r < mutateProbability)
         {
-            mutation = UnityEngine.Random.Range(-0.1f, 0.1f);
+            mutation = Random.Range(-0.5f, 0.5f);
         }
         return weight + mutation;
     }
@@ -176,17 +174,17 @@ public class EvolutionManager : MonoBehaviour
     private float BiasMutateMethod(float bias)
     {
         float mutation = 0;
-        float r = UnityEngine.Random.Range(0f, 1f);
+        float r = Random.Range(0f, 1f);
         if (r < mutateProbability)
         {
-            mutation = UnityEngine.Random.Range(-0.1f, 0.1f);
+            mutation = Random.Range(-0.2f, 0.2f);
         }
         return bias + mutation;
     }
 
     private float WeightInitMethod()
     {
-        return UnityEngine.Random.Range(-1f, 1f);
+        return Random.Range(-1f, 1f);
     }
 
     private float ActivationMethod(float x)

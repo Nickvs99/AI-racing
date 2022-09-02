@@ -1,6 +1,5 @@
 using System;
 
-[Serializable]
 public class NeuralNetwork
 {
     private int nLayers;
@@ -53,7 +52,14 @@ public class NeuralNetwork
 
     public NeuralNetwork Clone()
     {
-        return (NeuralNetwork) this.MemberwiseClone();
+        NeuralNetwork clone = new NeuralNetwork(layerSizes);
+        
+        for(int i = 0; i < nLayers - 1; i++)
+        {
+            clone.layers[i] = layers[i].Clone();
+        }
+
+        return clone;
     }
 
     public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
