@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,6 +26,8 @@ public class EvolutionManager : MonoBehaviour
     float overallBest = Mathf.NegativeInfinity;
     float overallWorst = Mathf.Infinity;
     float overallBestAvg = Mathf.NegativeInfinity;
+
+    private DataLogger dataLogger;
 
     private void Start()
     {
@@ -54,6 +58,17 @@ public class EvolutionManager : MonoBehaviour
         display.UpdateGenerationProgressField(generation, currentAgentIndex);
         display.UpdatePreviousGenerationField(0f, 0f, 0f);
         display.UpdateOverallField(0f, 0f, 0f);
+
+        (string, Func<string>)[] logMethod = new (string, Func<string>)[]
+        {
+            ("Generation", () => {return generation.ToString(); }),
+            ("Best", () => {return fitnesses.Max().ToString(); }),
+            ("Avg", () => {return fitnesses.Average().ToString(); }),
+            ("Worst", () => {return fitnesses.Min().ToString(); }),
+        };
+
+        string path = Path.Combine(Application.dataPath, "../../Data/data.txt");
+        dataLogger = new DataLogger(logMethod, path);
     }
 
     private void FixedUpdate()
@@ -77,6 +92,7 @@ public class EvolutionManager : MonoBehaviour
                 display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
                 display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
 
+                dataLogger.Log();
                 neuralNetworks = CreateNextGeneration();
                 generation++;
             }
@@ -129,7 +145,7 @@ public class EvolutionManager : MonoBehaviour
 
         for (int i = 0; i < populationSize; i++)
         {
-            float r = Random.Range(0f, 1f);
+            float r = UnityEngine.Random.Range(0f, 1f);
 
             // Pick a neural network based on the normalised fitness
             int index;
@@ -163,10 +179,10 @@ public class EvolutionManager : MonoBehaviour
     private float WeightMutateMethod(float weight)
     {
         float mutation = 0;
-        float r = Random.Range(0f, 1f);
+        float r = UnityEngine.Random.Range(0f, 1f);
         if(r < mutateProbability)
         {
-            mutation = Random.Range(-0.5f, 0.5f);
+            mutation = UnityEngine.Random.Range(-0.5f, 0.5f);
         }
         return weight + mutation;
     }
@@ -174,17 +190,17 @@ public class EvolutionManager : MonoBehaviour
     private float BiasMutateMethod(float bias)
     {
         float mutation = 0;
-        float r = Random.Range(0f, 1f);
+        float r = UnityEngine.Random.Range(0f, 1f);
         if (r < mutateProbability)
         {
-            mutation = Random.Range(-0.2f, 0.2f);
+            mutation = UnityEngine.Random.Range(-0.2f, 0.2f);
         }
         return bias + mutation;
     }
 
     private float WeightInitMethod()
     {
-        return Random.Range(-1f, 1f);
+        return UnityEngine.Random.Range(-1f, 1f);
     }
 
     private float ActivationMethod(float x)

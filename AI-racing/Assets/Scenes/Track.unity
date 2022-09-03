@@ -1584,13 +1584,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 429990439}
-  populationSize: 10
+  populationSize: 5
   agent: {fileID: 782720615}
   fitnesses: []
   generation: 0
   currentAgentIndex: 0
-  hiddenLayerSizes: 04000000
-  mutateProbability: 0.15
+  hiddenLayerSizes: 
+  mutateProbability: 1
 --- !u!4 &1457292716
 Transform:
   m_ObjectHideFlags: 0
