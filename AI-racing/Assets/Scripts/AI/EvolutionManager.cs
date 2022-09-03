@@ -30,6 +30,7 @@ public class EvolutionManager : MonoBehaviour
     [Header("Data logger")]
     [SerializeField] private bool loggerEnabled = true;
     [SerializeField] private string pathFromAssets = "../../data/data.txt";
+    [SerializeField] [TextArea(3, 10)] private string customComment = "";
     private DataLogger dataLogger;
 
     private void Start()
@@ -79,7 +80,7 @@ public class EvolutionManager : MonoBehaviour
         };
 
         string path = Path.Combine(Application.dataPath, pathFromAssets);
-        dataLogger = new DataLogger(logMethod, path);
+        dataLogger = new DataLogger(logMethod, path, comment: customComment);
     }
 
     private void FixedUpdate()

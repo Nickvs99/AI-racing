@@ -1593,6 +1593,7 @@ MonoBehaviour:
   mutateProbability: 1
   loggerEnabled: 1
   pathFromAssets: ../../data/data.txt
+  customComment: This is a generic test
 --- !u!4 &1457292716
 Transform:
   m_ObjectHideFlags: 0
