@@ -8,28 +8,57 @@ class DataLogReader:
          - path (string): path to the data file
          - seperator (string): character which seperate the columns
          - types (list of type): the value types for each column of the data file
-
         """
 
         with open(path, "r") as file:
+            lines = file.read().split("\n")
 
-            self.header = file.readline().strip().split(seperator)
-            self.content = []
+        # The data file is constructed in several sections, which are seperated by a seperator row
+        # The seperator row is a bunch of ---------------------
+        self.sections = self.determine_sections(lines)
 
-            for row in file:
+        data_section = self.sections[-1]
+        
+        self.header = data_section[0].strip().split(seperator)
+        
+        self.data = []
+        for row in data_section[1:]:
 
-                row_values = row.strip().split(seperator)
-                if types:
-                    for i in range(len(row_values)):
-                        row_values[i] = types[i](row_values[i])
+            row_values = row.split(seperator)
+            
+            if types:
+                for i in range(len(row_values)):
+                    row_values[i] = types[i](row_values[i])
 
-                self.content.append(row_values)
+            self.data.append(row_values)
+    
+    def determine_sections(self, lines):
+
+        sections = []
+
+        seperator_row_indices = [index for index, line in enumerate(lines) if line == "-" * len(line) and len(line) > 0]
+
+        # Pretend like their is a seperator row before and after the data file
+        # This ensure that the first and last section are also captured
+        section_row_indices = [-1, *seperator_row_indices, len(lines) - 1]
+
+        for i in range(len(section_row_indices) - 1):
+
+            start_index = section_row_indices[i] + 1
+            end_index = section_row_indices[i + 1]
+            
+            if start_index >= end_index:
+                continue
+
+            sections.append(lines[start_index:end_index])
+
+        return sections
 
     def get_row(self, index):
-        return self.content[index]
+        return self.data[index]
     
     def get_column_by_index(self, index):
-        return [row[index] for row in self.content]
+        return [row[index] for row in self.data]
 
     def get_column_by_heading(self, header):
         
@@ -41,7 +70,8 @@ def main():
     
     reader = DataLogReader("data/data.txt", types=[int, float, float, float])
 
-    for row in reader.content:
+    print(reader.header)
+    for row in reader.data:
         print(row)
 
 if __name__ == "__main__":
