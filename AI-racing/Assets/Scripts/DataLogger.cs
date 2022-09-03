@@ -13,12 +13,14 @@ public class DataLogger
         logMethods = _logMethods;
         path = _path;
 
-        // Create directory to file if it does not exist
-        Directory.CreateDirectory(Path.GetDirectoryName(path));
-
         if (!File.Exists(path))
         {
-            File.Create(path);
+            // Create directory to file if it does not exist
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            // Create file and then close it, which allows text to be written to 
+            // the newly created file
+            File.Create(path).Close();
         }
 
         File.WriteAllText(path, string.Empty);
