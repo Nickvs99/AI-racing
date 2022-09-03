@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -27,6 +27,9 @@ public class EvolutionManager : MonoBehaviour
     float overallWorst = Mathf.Infinity;
     float overallBestAvg = Mathf.NegativeInfinity;
 
+    [Header("Data logger")]
+    [SerializeField] private bool loggerEnabled = true;
+    [SerializeField] private string pathFromAssets = "../../data/data.txt";
     private DataLogger dataLogger;
 
     private void Start()
@@ -59,6 +62,14 @@ public class EvolutionManager : MonoBehaviour
         display.UpdatePreviousGenerationField(0f, 0f, 0f);
         display.UpdateOverallField(0f, 0f, 0f);
 
+        if(loggerEnabled)
+        {
+            InitLogger();
+        }
+    }
+
+    private void InitLogger()
+    {
         (string, Func<string>)[] logMethod = new (string, Func<string>)[]
         {
             ("Generation", () => {return generation.ToString(); }),
@@ -67,7 +78,7 @@ public class EvolutionManager : MonoBehaviour
             ("Worst", () => {return fitnesses.Min().ToString(); }),
         };
 
-        string path = Path.Combine(Application.dataPath, "../../Data/data.txt");
+        string path = Path.Combine(Application.dataPath, pathFromAssets);
         dataLogger = new DataLogger(logMethod, path);
     }
 
@@ -92,7 +103,10 @@ public class EvolutionManager : MonoBehaviour
                 display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
                 display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
 
-                dataLogger.Log();
+                if(loggerEnabled)
+                {
+                    dataLogger.Log();
+                }
                 neuralNetworks = CreateNextGeneration();
                 generation++;
             }
