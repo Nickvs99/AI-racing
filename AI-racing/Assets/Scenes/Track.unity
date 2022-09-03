@@ -1584,12 +1584,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 429990439}
-  populationSize: 10
+  populationSize: 5
   agent: {fileID: 782720615}
   fitnesses: []
   generation: 0
   currentAgentIndex: 0
-  hiddenLayerSizes: 
+  hiddenLayerSizes: 04000000
   mutateProbability: 1
   loggerEnabled: 1
   pathFromAssets: ../../data/data.txt

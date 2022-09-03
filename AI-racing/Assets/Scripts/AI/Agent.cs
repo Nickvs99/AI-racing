@@ -19,7 +19,7 @@ public class Agent : MonoBehaviour
     [SerializeField] private float fuelLeft;
 
     [Header("Vision")]
-    [SerializeField] private float fov = 120;
+    [SerializeField] public float fov = 120;
     [SerializeField] public int nrays = 5;
 
     [Header("Premature Conditions")]

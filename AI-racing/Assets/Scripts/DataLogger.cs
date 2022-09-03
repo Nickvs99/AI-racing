@@ -8,7 +8,7 @@ public class DataLogger
     private (string, Func<string>)[] logMethods;
     private string path;
 
-    public DataLogger((string, Func<string>)[] _logMethods, string _path, string comment = "No comment")
+    public DataLogger((string, Func<string>)[] _logMethods, string _path, string initialText = "")
     {
         logMethods = _logMethods;
         path = _path;
@@ -25,8 +25,12 @@ public class DataLogger
 
         File.WriteAllText(path, string.Empty);
 
-        WriteLine(comment);
-        WriteRowSeperator();
+        if (initialText.Length > 0)
+        {
+            WriteLine(initialText);
+            WriteRowSeperator();
+        }
+
         WriteHeader();
     }
 

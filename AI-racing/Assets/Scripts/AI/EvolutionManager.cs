@@ -79,8 +79,21 @@ public class EvolutionManager : MonoBehaviour
             ("Worst", () => {return fitnesses.Min().ToString(); }),
         };
 
+        Debug.Log(string.Join(", ", hiddenLayerSizes));
+
+        string initialText = $@"{customComment}
+{new String('-', 40)}
+population size: {populationSize}
+mutate probability: {mutateProbability}
+hidden layer sizes: {string.Join(", ", hiddenLayerSizes)}
+
+Agent details
+fov: {agent.fov}
+nrays: {agent.nrays}
+max fuel: {agent.maxFuel}";
+
         string path = Path.Combine(Application.dataPath, pathFromAssets);
-        dataLogger = new DataLogger(logMethod, path, comment: customComment);
+        dataLogger = new DataLogger(logMethod, path, initialText: initialText);
     }
 
     private void FixedUpdate()
