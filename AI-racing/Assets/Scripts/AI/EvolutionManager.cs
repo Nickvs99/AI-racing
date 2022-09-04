@@ -7,9 +7,10 @@ using UnityEngine;
 public class EvolutionManager : MonoBehaviour
 {
     [SerializeField] EvolutionProgressDisplay display;
+    [SerializeField] private Agent agent;
 
     [SerializeField] private int populationSize = 5;
-    [SerializeField] private Agent agent;
+    public float mutateProbability = 0.1f;
 
     private NeuralNetwork[] neuralNetworks;
     public float[] fitnesses;
@@ -17,15 +18,13 @@ public class EvolutionManager : MonoBehaviour
     public int generation;
     public int currentAgentIndex;
 
+    [Header("Seeding")]
+    [SerializeField] private bool useFixedSeed = false;
+    [SerializeField] private int seed = 0;
+
     [Header("Neural Network")]
     [SerializeField] private int[] hiddenLayerSizes;
     private int[] layerSizes;
-
-    public float mutateProbability = 0.1f;
-
-    float overallBest = Mathf.NegativeInfinity;
-    float overallWorst = Mathf.Infinity;
-    float overallBestAvg = Mathf.NegativeInfinity;
 
     [Header("Data logger")]
     [SerializeField] private bool loggerEnabled = true;
@@ -33,8 +32,16 @@ public class EvolutionManager : MonoBehaviour
     [SerializeField] [TextArea(3, 10)] private string customComment = "";
     private DataLogger dataLogger;
 
+    float overallBest = Mathf.NegativeInfinity;
+    float overallWorst = Mathf.Infinity;
+    float overallBestAvg = Mathf.NegativeInfinity;
+
+
+
     private void Start()
     {
+        InitRNG();
+
         neuralNetworks = new NeuralNetwork[populationSize];
         fitnesses = new float[populationSize];
 
@@ -67,6 +74,16 @@ public class EvolutionManager : MonoBehaviour
         {
             InitLogger();
         }
+    }
+    
+    private void InitRNG()
+    {
+        if (!useFixedSeed)
+        {
+            seed = UnityEngine.Random.Range(0, int.MaxValue);
+        }
+
+        UnityEngine.Random.InitState(seed);
     }
 
     private void InitLogger()
