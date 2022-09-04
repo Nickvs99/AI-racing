@@ -26,9 +26,9 @@ public class EvolutionProgressDisplay : MonoBehaviour
 
     private string BestWorstAvgString(float best, float worst, float avg)
     {
-        string b = string.Format("{0:#.##}", best);
-        string w = string.Format("{0:#.##}", worst);
-        string a = string.Format("{0:#.##}", avg);
+        string b = string.Format("{0:0.00}", best);
+        string w = string.Format("{0:0.00}", worst);
+        string a = string.Format("{0:0.00}", avg);
 
         return $"{b}\t{a}\t{w}";
     }
