@@ -125,9 +125,15 @@ public class Agent : MonoBehaviour
         TimeOnPathData data = path.CalculateClosestPointOnPathData(transform.position);
         float partialFitness = data.previousIndex + data.percentBetweenIndices;
 
-        float penaltyFactor = (lapFitness + partialFitness) > 0f ? crashPenalty : 1/crashPenalty;
-
-        return (lapFitness + partialFitness) * penaltyFactor;
+        // Penalty to fitness for crashing
+        float penalty = 0;
+        if(hasCrashed)
+        {
+            float penaltyFactor = (lapFitness + partialFitness) > 0f ? crashPenalty : - 1f / crashPenalty;
+            penalty = (lapFitness + partialFitness) * penaltyFactor;
+        }
+        
+        return (lapFitness + partialFitness) - penalty;
     }
 
     private float[] GetVisionDistances()
