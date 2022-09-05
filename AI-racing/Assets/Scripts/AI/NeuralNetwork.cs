@@ -27,10 +27,23 @@ public class NeuralNetwork
         nLayers = layerSizes.Length;
 
         // Last layer does not need to be stored, since it is only a output layer
-        layers = new NeuralNetworkLayer[nLayers - 1];
-        for (int i = 0; i < layers.Length; i++)
+        layers = new NeuralNetworkLayer[nLayers];
+        for (int i = 0; i < nLayers; i++)
         {
-            layers[i] = new NeuralNetworkLayer(layerSizes[i], layerSizes[i + 1], weightInitMethod, biasInitMethod, activationMethod);
+            int nInputs = layerSizes[i];
+
+            int nOutputs;
+            if (i == nLayers - 1)
+            {
+                // Last layer does not have any outputs
+                nOutputs = 0;
+            }
+            else
+            {
+                nOutputs = layerSizes[i + 1];
+            }
+
+            layers[i] = new NeuralNetworkLayer(nInputs, nOutputs, weightInitMethod, biasInitMethod, activationMethod);
         }
     }
 
@@ -62,9 +75,25 @@ public class NeuralNetwork
         return clone;
     }
 
+    // Testing purposes and possibly usefull for biodiversity
+    public Tuple<float, float> ComputeTotalWeightAndBias()
+    {
+        float totalWeight = 0f;
+        float totalBias = 0f;
+
+        foreach(NeuralNetworkLayer layer in layers)
+        {
+            (float weight, float bias) = layer.ComputeTotalWeightAndBias();
+            totalWeight += weight;
+            totalBias += bias;
+        }
+
+        return new Tuple<float, float>(totalWeight, totalBias);
+    }
+
     public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
     {
-        for(int i = 0; i<layers.Length - 1; i++)
+        for(int i = 0; i < layers.Length - 1; i++)
         {
             layers[i].Mutate(WeightMutateMethod, BiasMutateMethod);
         }

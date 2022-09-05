@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class NeuralNetworkLayer
 {
@@ -80,6 +81,11 @@ public class NeuralNetworkLayer
     
     public float[] ComputeOutputs(float[] inputs)
     {
+        if(nOutputs == 0)
+        {
+            return inputs;
+        }
+
         float[] outputs = new float[nOutputs];
 
         for(int i = 0; i < nOutputs; i++)
@@ -96,14 +102,16 @@ public class NeuralNetworkLayer
         return outputs;
     }
 
-    public (float, float) ComputeTotal()
+    public (float, float) ComputeTotalWeightAndBias()
     {
         float weightTotal = 0;
         float biasTotal = 0;
+
         foreach(float weight in weights)
         {
             weightTotal += weight;
         }
+        
         foreach(float bias in biases)
         {
             biasTotal += bias;
