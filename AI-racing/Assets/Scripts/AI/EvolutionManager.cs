@@ -184,11 +184,6 @@ max fuel: {agent.maxFuel}";
 
             neuralNetworks = CreateNextGeneration();
             generation++;
-
-            if (generation == 10)
-            {
-                Physics.autoSimulation = true;
-            }
         }
 
         currentAgentIndex = (currentAgentIndex + 1) % populationSize;
