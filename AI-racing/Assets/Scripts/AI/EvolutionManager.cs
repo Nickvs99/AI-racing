@@ -90,7 +90,8 @@ public class EvolutionManager : PhysicsExtension
 
     public void Run()
     {
-        for (int i = 0; i < 100; i++)
+        int i = 0;
+        while(!agent.hasFinished && i < 1000)
         {
             PhysicsUpdate();
 
@@ -101,6 +102,11 @@ public class EvolutionManager : PhysicsExtension
             }
 
             Physics.Simulate(Time.fixedDeltaTime);
+        }
+
+        if(agent.hasFinished)
+        {
+            OnAgentFinish();
         }
     }
     
@@ -143,48 +149,54 @@ max fuel: {agent.maxFuel}";
     {
         if (agent.hasFinished)
         {
-            float fitness = agent.CalcFitness();
-            fitnesses[currentAgentIndex] = fitness;
-
-            // If last agent of its generation has finished, create new generation
-            if (currentAgentIndex == populationSize - 1)
-            {
-                float currentBest = fitnesses.Max();
-                float currentWorst = fitnesses.Min();
-                float currentAvg = fitnesses.Average();
-
-                overallBest = Mathf.Max(overallBest, currentBest);
-                overallWorst = Mathf.Min(overallWorst, currentWorst);
-                overallBestAvg = Mathf.Max(overallBestAvg, currentAvg);
-
-                display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
-                display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
-
-                if (loggerEnabled)
-                {
-                    dataLogger.Log();
-                }
-                neuralNetworks = CreateNextGeneration();
-                generation++;
-
-                if(generation == 10)
-                {
-                    Physics.autoSimulation = true;
-                }
-            }
-
-            currentAgentIndex = (currentAgentIndex + 1) % populationSize;
-
-            display.UpdateGenerationProgressField(generation, currentAgentIndex);
-
-            agent.Init();
-            agent.SetNeuralNetwork(neuralNetworks[currentAgentIndex]);
+            OnAgentFinish();
         }
 
         if(!Physics.autoSimulation)
         {
             agent.PhysicsUpdate();
         }
+    }
+
+    private void OnAgentFinish()
+    {
+        float fitness = agent.CalcFitness();
+        fitnesses[currentAgentIndex] = fitness;
+
+        // If last agent of its generation has finished, create new generation
+        if (currentAgentIndex == populationSize - 1)
+        {
+            float currentBest = fitnesses.Max();
+            float currentWorst = fitnesses.Min();
+            float currentAvg = fitnesses.Average();
+
+            overallBest = Mathf.Max(overallBest, currentBest);
+            overallWorst = Mathf.Min(overallWorst, currentWorst);
+            overallBestAvg = Mathf.Max(overallBestAvg, currentAvg);
+
+            display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
+            display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
+
+            if (loggerEnabled)
+            {
+                dataLogger.Log();
+            }
+
+            neuralNetworks = CreateNextGeneration();
+            generation++;
+
+            if (generation == 10)
+            {
+                Physics.autoSimulation = true;
+            }
+        }
+
+        currentAgentIndex = (currentAgentIndex + 1) % populationSize;
+
+        display.UpdateGenerationProgressField(generation, currentAgentIndex);
+
+        agent.Init();
+        agent.SetNeuralNetwork(neuralNetworks[currentAgentIndex]);
     }
 
     private NeuralNetwork[] CreateNextGeneration()
