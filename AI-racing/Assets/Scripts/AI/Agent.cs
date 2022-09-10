@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LapTracker), typeof(CarManager))]
-public class Agent : MonoBehaviour, IPhysicsObject
+public class Agent : PhysicsExtension
 {
     [SerializeField] PathCreator pathCreator;
     public VertexPath path;
@@ -68,35 +68,8 @@ public class Agent : MonoBehaviour, IPhysicsObject
         transform.position += transform.forward * 0.1f;
     }
 
-    private void FixedUpdate()
+    public override void PhysicsUpdate()
     {
-        if (Physics.autoSimulation)
-        {
-            PhysicsStep();
-        }
-    }
-
-    public void PhysicsStep()
-    {
-        // TEMP should be changed to the end of the method
-        // Current behaviour mimics the original fixedUpdate
-        if (!Physics.autoSimulation)
-        {
-            carManager.PhysicsStep();
-            lapTracker.CheckLapCompleted();
-        }
-
-        float[] neuralNetworkInput = new float[neuralNetwork.GetLayerSize(0)];
-
-        float[] rayDistances = GetVisionDistances();
-        for (int i = 0; i < rayDistances.Length; i++)
-        {
-            neuralNetworkInput[i] = rayDistances[i];
-        }
-
-        neuralNetworkInput[neuralNetworkInput.Length - 1] = carManager.speed;
-
-        carManager.carInput = ComputeCarInput(neuralNetworkInput);
 
         // Premature condition checking
         if (transform.position.y < minAgentHeight)
@@ -123,6 +96,25 @@ public class Agent : MonoBehaviour, IPhysicsObject
         if (hasFinished)
         {
             return;
+        }
+        
+        float[] neuralNetworkInput = new float[neuralNetwork.GetLayerSize(0)];
+
+        float[] rayDistances = GetVisionDistances();
+        for (int i = 0; i < rayDistances.Length; i++)
+        {
+            neuralNetworkInput[i] = rayDistances[i];
+        }
+
+        neuralNetworkInput[neuralNetworkInput.Length - 1] = carManager.speed;
+
+        carManager.carInput = ComputeCarInput(neuralNetworkInput);
+        
+        lapTracker.CheckLapCompleted();
+
+        if (!Physics.autoSimulation)
+        {
+            carManager.PhysicsUpdate();
         }
     }
 
@@ -179,10 +171,6 @@ public class Agent : MonoBehaviour, IPhysicsObject
             {
                 DrawVisionRay(origin, dir, hit.distance);
                 visionDistances[i] = hit.distance;
-            }
-            else
-            {
-                Debug.LogWarning("Ray fails to see anyting", gameObject);
             }
         }
 

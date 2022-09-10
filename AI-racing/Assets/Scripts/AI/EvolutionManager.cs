@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class EvolutionManager : MonoBehaviour, IPhysicsObject
+public class EvolutionManager : PhysicsExtension
 {
     [SerializeField] EvolutionProgressDisplay display;
     [SerializeField] private Agent agent;
@@ -88,7 +88,14 @@ public class EvolutionManager : MonoBehaviour, IPhysicsObject
     {
         for (int i = 0; i < 100; i++)
         {
-            PhysicsStep();
+            PhysicsUpdate();
+
+            // Physics.autoSimulation might have been turned off in the physics update
+            if(Physics.autoSimulation)
+            {
+                return;
+            }
+
             Physics.Simulate(Time.fixedDeltaTime);
         }
     }
@@ -113,8 +120,6 @@ public class EvolutionManager : MonoBehaviour, IPhysicsObject
             ("Worst", () => {return fitnesses.Min().ToString(); }),
         };
 
-        Debug.Log(string.Join(", ", hiddenLayerSizes));
-
         string initialText = $@"{customComment}
 {new String('-', 40)}
 population size: {populationSize}
@@ -130,15 +135,7 @@ max fuel: {agent.maxFuel}";
         dataLogger = new DataLogger(logMethod, path, initialText: initialText);
     }
 
-    private void FixedUpdate()
-    {
-        if (Physics.autoSimulation)
-        {
-            PhysicsStep();
-        }
-    }
-
-    public void PhysicsStep()
+    public override void PhysicsUpdate()
     {
         if (agent.hasFinished)
         {
@@ -182,7 +179,7 @@ max fuel: {agent.maxFuel}";
 
         if(!Physics.autoSimulation)
         {
-            agent.PhysicsStep();
+            agent.PhysicsUpdate();
         }
     }
 

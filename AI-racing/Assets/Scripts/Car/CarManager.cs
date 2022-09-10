@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(Engine)), RequireComponent(typeof(Brakes)), RequireComponent(typeof(SteeringWheel))]
-public class CarManager : MonoBehaviour, IPhysicsObject
+public class CarManager : PhysicsExtension
 {
     public CarInput carInput { get; set; }
 
@@ -44,20 +44,7 @@ public class CarManager : MonoBehaviour, IPhysicsObject
         speed = 0f;
     }
 
-    private void Update()
-    {
-        speed = CalcSpeed();
-    }
-
-    private void FixedUpdate()
-    {
-        if (Physics.autoSimulation)
-        {
-            PhysicsStep();
-        }
-    }
-
-    public void PhysicsStep()
+    public override void PhysicsUpdate()
     {
         speed = CalcSpeed();
         
