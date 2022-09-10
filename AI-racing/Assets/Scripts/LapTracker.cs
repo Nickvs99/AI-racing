@@ -44,7 +44,7 @@ public class LapTracker : MonoBehaviour
         prevPosition = transform.position;
     }
 
-    private void FixedUpdate()
+    public void CheckLapCompleted()
     {
         // Only check if the distance is smaller than  twice the roadwidth of the road mesh
         // The roadwidth on the script is actually the road radius, therefore twice.

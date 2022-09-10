@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(Engine)), RequireComponent(typeof(Brakes)), RequireComponent(typeof(SteeringWheel))]
-public class CarManager : MonoBehaviour
+public class CarManager : MonoBehaviour, IPhysicsObject
 {
     public CarInput carInput { get; set; }
 
@@ -51,6 +51,16 @@ public class CarManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Physics.autoSimulation)
+        {
+            PhysicsStep();
+        }
+    }
+
+    public void PhysicsStep()
+    {
+        speed = CalcSpeed();
+        
         engine.ApplyForce(carInput.engineInput, wheels);
         brakes.ApplyForce(carInput.brakeInput, wheels);
         steeringWheel.ApplySteeringAngle(carInput.steerInput, wheels);

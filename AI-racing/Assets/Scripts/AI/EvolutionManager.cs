@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class EvolutionManager : MonoBehaviour
+public class EvolutionManager : MonoBehaviour, IPhysicsObject
 {
     [SerializeField] EvolutionProgressDisplay display;
     [SerializeField] private Agent agent;
@@ -74,6 +74,23 @@ public class EvolutionManager : MonoBehaviour
         {
             InitLogger();
         }
+
+        Physics.autoSimulation = false;
+    }
+
+    private void Update()
+    {
+        if(!Physics.autoSimulation)
+            Run();
+    }
+
+    public void Run()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            PhysicsStep();
+            Physics.Simulate(Time.fixedDeltaTime);
+        }
     }
     
     private void InitRNG()
@@ -115,13 +132,21 @@ max fuel: {agent.maxFuel}";
 
     private void FixedUpdate()
     {
+        if (Physics.autoSimulation)
+        {
+            PhysicsStep();
+        }
+    }
+
+    public void PhysicsStep()
+    {
         if (agent.hasFinished)
         {
             float fitness = agent.CalcFitness();
             fitnesses[currentAgentIndex] = fitness;
 
             // If last agent of its generation has finished, create new generation
-            if(currentAgentIndex == populationSize - 1)
+            if (currentAgentIndex == populationSize - 1)
             {
                 float currentBest = fitnesses.Max();
                 float currentWorst = fitnesses.Min();
@@ -134,12 +159,17 @@ max fuel: {agent.maxFuel}";
                 display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
                 display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
 
-                if(loggerEnabled)
+                if (loggerEnabled)
                 {
                     dataLogger.Log();
                 }
                 neuralNetworks = CreateNextGeneration();
                 generation++;
+
+                if(generation == 10)
+                {
+                    Physics.autoSimulation = true;
+                }
             }
 
             currentAgentIndex = (currentAgentIndex + 1) % populationSize;
@@ -148,6 +178,11 @@ max fuel: {agent.maxFuel}";
 
             agent.Init();
             agent.SetNeuralNetwork(neuralNetworks[currentAgentIndex]);
+        }
+
+        if(!Physics.autoSimulation)
+        {
+            agent.PhysicsStep();
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LapTracker), typeof(CarManager))]
-public class Agent : MonoBehaviour
+public class Agent : MonoBehaviour, IPhysicsObject
 {
     [SerializeField] PathCreator pathCreator;
     public VertexPath path;
@@ -70,10 +70,26 @@ public class Agent : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Physics.autoSimulation)
+        {
+            PhysicsStep();
+        }
+    }
+
+    public void PhysicsStep()
+    {
+        // TEMP should be changed to the end of the method
+        // Current behaviour mimics the original fixedUpdate
+        if (!Physics.autoSimulation)
+        {
+            carManager.PhysicsStep();
+            lapTracker.CheckLapCompleted();
+        }
+
         float[] neuralNetworkInput = new float[neuralNetwork.GetLayerSize(0)];
 
         float[] rayDistances = GetVisionDistances();
-        for(int i = 0; i < rayDistances.Length; i++)
+        for (int i = 0; i < rayDistances.Length; i++)
         {
             neuralNetworkInput[i] = rayDistances[i];
         }
@@ -82,12 +98,13 @@ public class Agent : MonoBehaviour
 
         carManager.carInput = ComputeCarInput(neuralNetworkInput);
 
-        if(transform.position.y < minAgentHeight)
+        // Premature condition checking
+        if (transform.position.y < minAgentHeight)
         {
             hasCrashed = true;
         }
 
-        if(Mathf.Abs(carManager.speed) < minSpeed)
+        if (Mathf.Abs(carManager.speed) < minSpeed)
         {
             minSpeedDuration += 1f;
         }
@@ -101,6 +118,11 @@ public class Agent : MonoBehaviour
         if (fuelLeft < 0f || hasCrashed || minSpeedDuration >= minSpeedMaxDuration)
         {
             hasFinished = true;
+        }
+
+        if (hasFinished)
+        {
+            return;
         }
     }
 
@@ -132,7 +154,7 @@ public class Agent : MonoBehaviour
             float penaltyFactor = (lapFitness + partialFitness) > 0f ? crashPenalty : - 1f / crashPenalty;
             penalty = (lapFitness + partialFitness) * penaltyFactor;
         }
-        
+
         return (lapFitness + partialFitness) - penalty;
     }
 
