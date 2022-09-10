@@ -140,14 +140,13 @@ public class Agent : PhysicsExtension
         float partialFitness = data.previousIndex + data.percentBetweenIndices;
 
         // Penalty to fitness for crashing
-        float penalty = 0;
+        float multiplier = 1;
         if(hasCrashed)
         {
-            float penaltyFactor = (lapFitness + partialFitness) > 0f ? crashPenalty : - 1f / crashPenalty;
-            penalty = (lapFitness + partialFitness) * penaltyFactor;
+            multiplier = (lapFitness + partialFitness) > 0f ? crashPenalty : 1f / crashPenalty;
         }
 
-        return (lapFitness + partialFitness) - penalty;
+        return (lapFitness + partialFitness) * multiplier;
     }
 
     private float[] GetVisionDistances()
