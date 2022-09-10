@@ -80,6 +80,10 @@ public class EvolutionManager : PhysicsExtension
 
     private void Update()
     {
+        // Toggle learn rate
+        if(Input.GetKeyDown("p"))
+            Physics.autoSimulation = !Physics.autoSimulation;
+
         if(!Physics.autoSimulation)
             Run();
     }
