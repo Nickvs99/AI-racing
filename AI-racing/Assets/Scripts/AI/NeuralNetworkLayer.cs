@@ -7,11 +7,10 @@ public class NeuralNetworkLayer
     public int nInputs;
     public int nOutputs;
 
-    private float[,] weights;
+    
+    public WrapperArray<float>[] weights; // WrapperArray[] can be serialized as opposed to T[,]
     public float[] biases;
 
-    // TODO use this structure in the network layer
-    public Arr[] weightsJagged;
 
     Func<float> WeightInitMethod;
     Func<float> BiasInitMethod;
@@ -25,20 +24,6 @@ public class NeuralNetworkLayer
         weights = InitWeights(weightInitMethod);
         biases = InitBiases(biasInitMethod);
 
-        weightsJagged = new Arr[nInputs];
-        for (int i = 0; i < nInputs; i++)
-        {
-            Arr arr = new Arr();
-            arr.arr = new float[nOutputs];
-
-            for (int j = 0; j < nOutputs; j++)
-            {
-                arr.arr[j] = weights[i, j];
-            }
-
-            weightsJagged[i] = arr;
-        }
-
         WeightInitMethod = weightInitMethod;
         BiasInitMethod = biasInitMethod;
         ActivationMethod = activationMethod;
@@ -47,23 +32,42 @@ public class NeuralNetworkLayer
     public NeuralNetworkLayer Clone()
     {
         NeuralNetworkLayer clone = new NeuralNetworkLayer(nInputs, nOutputs, WeightInitMethod, BiasInitMethod, ActivationMethod);
-        
-        Array.Copy(weights, clone.weights, weights.GetLength(0) * weights.GetLength(1));
+
+        // Copy weights into clone
+        WrapperArray<float>[] _weights = new WrapperArray<float>[nInputs];
+        for (int i = 0; i < nInputs; i++)
+        {
+            WrapperArray<float> wrapper = new WrapperArray<float>(new float[nOutputs]);
+
+            for (int j = 0; j < nOutputs; j++)
+            {
+                wrapper[j] = weights[i][j];
+            }
+
+            _weights[i] = wrapper;
+        }
+
+        clone.weights = _weights;
+
         Array.Copy(biases, clone.biases, biases.Length);
 
         return clone;
     }
 
-    private float[,] InitWeights(Func<float> InitMethod)
+    private WrapperArray<float>[] InitWeights(Func<float> InitMethod)
     {
-        float[,] _weights = new float[nInputs, nOutputs];
+        WrapperArray<float>[] _weights = new WrapperArray<float>[nInputs];
 
-        for(int i = 0; i < _weights.GetLength(0); i++)
+        for (int i = 0; i < nInputs; i++)
         {
-            for(int j = 0; j < _weights.GetLength(1); j++)
+            WrapperArray<float> wrapper = new WrapperArray<float>(new float[nOutputs]);
+
+            for (int j = 0; j < nOutputs; j++)
             {
-                _weights[i, j] = InitMethod();
+                wrapper[j] = InitMethod();
             }
+
+            _weights[i] = wrapper;
         }
 
         return _weights;
@@ -83,11 +87,11 @@ public class NeuralNetworkLayer
 
     public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
     {
-        for (int i = 0; i < weights.GetLength(0); i++)
+        for (int i = 0; i < weights.Length; i++)
         {
-            for (int j = 0; j < weights.GetLength(1); j++)
+            for (int j = 0; j < weights[i].Length; j++)
             {
-                weights[i, j] = WeightMutateMethod(weights[i, j]);
+                weights[i][j] = WeightMutateMethod(weights[i][j]);
             }
         }
 
@@ -111,7 +115,7 @@ public class NeuralNetworkLayer
             float value = 0;
             for(int j = 0; j < nInputs; j++)
             {
-                value += weights[j, i] * inputs[j];
+                value += weights[j][i] * inputs[j];
             }
 
             outputs[i] = ActivationMethod(value + biases[i]);
@@ -125,9 +129,12 @@ public class NeuralNetworkLayer
         float weightTotal = 0;
         float biasTotal = 0;
 
-        foreach(float weight in weights)
+        foreach(WrapperArray<float> wrapper in weights)
         {
-            weightTotal += weight;
+            foreach(float weight in wrapper)
+            {
+                weightTotal += weight;
+            }
         }
         
         foreach(float bias in biases)
@@ -137,11 +144,4 @@ public class NeuralNetworkLayer
 
         return (weightTotal, biasTotal);
     }
-    
-    [Serializable]
-    public class Arr
-    {
-        public float[] arr;
-    }
-    
 }
