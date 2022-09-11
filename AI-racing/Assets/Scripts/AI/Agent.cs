@@ -199,8 +199,10 @@ public class Agent : PhysicsExtension
         SaveManager.SaveAgent(new AgentData(this));
     }
 
-    public void Load()
+    public void Load(AgentData data)
     {
-        AgentData data = SaveManager.LoadAgent();
+        fov = data.fov;
+        nrays = data.nrays;
+        neuralNetwork = data.neuralNetwork;
     }
 }

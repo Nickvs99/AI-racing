@@ -32,11 +32,11 @@ public class EvolutionManager : PhysicsExtension
     [SerializeField] [TextArea(3, 10)] private string customComment = "";
     private DataLogger dataLogger;
 
-    float overallBest = Mathf.NegativeInfinity;
-    float overallWorst = Mathf.Infinity;
-    float overallBestAvg = Mathf.NegativeInfinity;
+    private float overallBest = Mathf.NegativeInfinity;
+    private float overallWorst = Mathf.Infinity;
+    private float overallBestAvg = Mathf.NegativeInfinity;
 
-
+    private NeuralNetwork overallBestNeuralNetwork;
 
     private void Start()
     {
@@ -83,6 +83,28 @@ public class EvolutionManager : PhysicsExtension
         // Toggle learn rate
         if(Input.GetKeyDown("p"))
             Physics.autoSimulation = !Physics.autoSimulation;
+
+        // Save last completed agent
+        if(Input.GetKeyDown("s"))
+        {
+            int previousAgentIndex = (currentAgentIndex - 1) % (populationSize);
+            Debug.Log($"Save agent: {fitnesses[previousAgentIndex]}");
+
+            AgentData data = new AgentData(agent, neuralNetworks[previousAgentIndex]);
+            SaveManager.SaveAgent(data);
+        }
+
+        // Load
+        if(Input.GetKeyDown("l"))
+        {
+            AgentData data = SaveManager.LoadAgentData();
+
+            Debug.Log($"Load: {data.fov}, {data.nrays}");
+            agent.Load(data);
+            agent.Init();
+
+            Physics.autoSimulation = true;
+        }
 
         if(!Physics.autoSimulation)
             Run();
@@ -160,11 +182,13 @@ max fuel: {agent.maxFuel}";
 
     private void OnAgentFinish()
     {
-        agent.Save();
-
-        Debug.Break();
         float fitness = agent.CalcFitness();
         fitnesses[currentAgentIndex] = fitness;
+
+        if(fitness > overallBest)
+        {
+            overallBestNeuralNetwork = agent.neuralNetwork;
+        }
 
         // If last agent of its generation has finished, create new generation
         if (currentAgentIndex == populationSize - 1)

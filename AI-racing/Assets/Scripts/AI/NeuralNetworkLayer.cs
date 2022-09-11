@@ -14,7 +14,7 @@ public class NeuralNetworkLayer
 
     Func<float> WeightInitMethod;
     Func<float> BiasInitMethod;
-    Func<float, float> ActivationMethod;
+    public Func<float, float> ActivationMethod;
 
     public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod, Func<float, float> activationMethod)
     {
@@ -118,7 +118,9 @@ public class NeuralNetworkLayer
                 value += weights[j][i] * inputs[j];
             }
 
-            outputs[i] = ActivationMethod(value + biases[i]);
+            // TEMP
+            outputs[i] = value + biases[i];
+            //outputs[i] = ActivationMethod(value + biases[i]);
         }
 
         return outputs;

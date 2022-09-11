@@ -22,7 +22,7 @@ public static class SaveManager
 
     }
 
-    public static AgentData LoadAgent()
+    public static AgentData LoadAgentData()
     {
         string path = Path.Combine(Application.dataPath, "agent.json");
 

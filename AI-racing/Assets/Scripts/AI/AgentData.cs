@@ -7,7 +7,7 @@ using UnityEngine;
 public class AgentData
 {
     public float fov;
-    public float nrays;
+    public int nrays;
 
     public NeuralNetwork neuralNetwork;
 
@@ -16,5 +16,12 @@ public class AgentData
         fov = agent.fov;
         nrays = agent.nrays;
         neuralNetwork = agent.neuralNetwork;
+    }
+
+    public AgentData(Agent agent, NeuralNetwork network)
+    {
+        fov = agent.fov;
+        nrays = agent.nrays;
+        neuralNetwork = network;
     }
 }
