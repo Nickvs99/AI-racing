@@ -160,6 +160,9 @@ max fuel: {agent.maxFuel}";
 
     private void OnAgentFinish()
     {
+        agent.Save();
+
+        Debug.Break();
         float fitness = agent.CalcFitness();
         fitnesses[currentAgentIndex] = fitness;
 

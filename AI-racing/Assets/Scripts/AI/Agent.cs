@@ -28,8 +28,7 @@ public class Agent : PhysicsExtension
     [SerializeField] private float minSpeedMaxDuration = 100f;
     private float minSpeedDuration;
 
-    
-    private NeuralNetwork neuralNetwork;
+    public NeuralNetwork neuralNetwork;
 
     private void Awake()
     {
@@ -193,5 +192,15 @@ public class Agent : PhysicsExtension
         }
 
         Debug.DrawRay(origin, dir * distance, color);
+    }
+
+    public void Save()
+    {
+        SaveManager.SaveAgent(new AgentData(this));
+    }
+
+    public void Load()
+    {
+        AgentData data = SaveManager.LoadAgent();
     }
 }

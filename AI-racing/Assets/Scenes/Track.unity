@@ -778,6 +778,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c1b34f0261602f4caf5a72cbc95c87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentData:
+    fov: 0
+    nrays: 0
+    neuralNetwork:
+      nLayers: 0
+      layerSizes: 
+      layers: []
   pathCreator: {fileID: 33461886}
   crashPenalty: 0.5
   hasFinished: 0
@@ -788,6 +795,10 @@ MonoBehaviour:
   minAgentHeight: -1
   minSpeed: 1
   minSpeedMaxDuration: 100
+  neuralNetwork:
+    nLayers: 0
+    layerSizes: 
+    layers: []
 --- !u!114 &782720620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1775,7 +1786,7 @@ MonoBehaviour:
   generation: 0
   currentAgentIndex: 0
   useFixedSeed: 0
-  seed: 0
+  seed: 487055020
   hiddenLayerSizes: 
   loggerEnabled: 1
   pathFromAssets: ../../data/data.txt

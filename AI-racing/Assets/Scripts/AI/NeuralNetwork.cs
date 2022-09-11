@@ -1,10 +1,11 @@
 using System;
 
+[Serializable]
 public class NeuralNetwork
 {
-    private int nLayers;
-    private int[] layerSizes;
-    private NeuralNetworkLayer[] layers;
+    public int nLayers;
+    public int[] layerSizes;
+    public NeuralNetworkLayer[] layers;
 
     public NeuralNetwork(int[] _layerSizes, Func<float> weightInitMethod = null, Func<float> biasInitMethod = null, Func<float, float> activationMethod = null)
     {

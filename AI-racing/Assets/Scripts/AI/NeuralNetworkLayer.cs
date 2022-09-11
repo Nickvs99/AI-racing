@@ -1,13 +1,17 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public class NeuralNetworkLayer
 {
-    private int nInputs;
-    private int nOutputs;
+    public int nInputs;
+    public int nOutputs;
 
     private float[,] weights;
-    private float[] biases;
+    public float[] biases;
+
+    // TODO use this structure in the network layer
+    public Arr[] weightsJagged;
 
     Func<float> WeightInitMethod;
     Func<float> BiasInitMethod;
@@ -20,6 +24,20 @@ public class NeuralNetworkLayer
 
         weights = InitWeights(weightInitMethod);
         biases = InitBiases(biasInitMethod);
+
+        weightsJagged = new Arr[nInputs];
+        for (int i = 0; i < nInputs; i++)
+        {
+            Arr arr = new Arr();
+            arr.arr = new float[nOutputs];
+
+            for (int j = 0; j < nOutputs; j++)
+            {
+                arr.arr[j] = weights[i, j];
+            }
+
+            weightsJagged[i] = arr;
+        }
 
         WeightInitMethod = weightInitMethod;
         BiasInitMethod = biasInitMethod;
@@ -119,4 +137,11 @@ public class NeuralNetworkLayer
 
         return (weightTotal, biasTotal);
     }
+    
+    [Serializable]
+    public class Arr
+    {
+        public float[] arr;
+    }
+    
 }
