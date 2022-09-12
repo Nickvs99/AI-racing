@@ -60,7 +60,7 @@ public class EvolutionManager : PhysicsExtension
         {
             neuralNetworks[i] = new NeuralNetwork(layerSizes,
                 weightInitMethod: WeightInitMethod,
-                activationMethod: ActivationMethod
+                activationName: "Default"
             );
         }
 
@@ -96,14 +96,13 @@ public class EvolutionManager : PhysicsExtension
         {
             AgentData data = SaveManager.LoadAgentData();
 
-            Debug.Log($"Load: {data.fov}, {data.nrays}");
             agent.Load(data);
             agent.Init();
 
             Physics.autoSimulation = true;
         }
 
-        if(!Physics.autoSimulation)
+        if (!Physics.autoSimulation)
             Run();
     }
 
@@ -184,6 +183,7 @@ max fuel: {agent.maxFuel}";
 
         if(fitness > overallBest)
         {
+            overallBest = fitness;
             overallBestNeuralNetwork = agent.neuralNetwork.Clone();
         }
 
@@ -313,10 +313,5 @@ max fuel: {agent.maxFuel}";
     private float WeightInitMethod()
     {
         return UnityEngine.Random.Range(-1f, 1f);
-    }
-
-    private float ActivationMethod(float x)
-    {
-        return x;
     }
 }

@@ -10,7 +10,7 @@ public class NeuralNetworkLayer
     public WrapperArray<float>[] weights; // WrapperArray[] can be serialized as opposed to T[,]
     public float[] biases;
 
-    public Func<float, float> ActivationMethod;
+    public string activationName;
 
     // Use this constructor if the weights and biases are manually set
     public NeuralNetworkLayer(int _nInputs, int _nOutputs)
@@ -22,7 +22,7 @@ public class NeuralNetworkLayer
         biases = new float[nOutputs];
     }
     
-    public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod, Func<float, float> activationMethod)
+    public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod, string _activationName)
     {
         nInputs = _nInputs;
         nOutputs = _nOutputs;
@@ -30,14 +30,12 @@ public class NeuralNetworkLayer
         weights = InitWeights(weightInitMethod);
         biases = InitBiases(biasInitMethod);
 
-        ActivationMethod = activationMethod;
+        activationName = _activationName;
     }
 
     public NeuralNetworkLayer Clone()
     {
-        NeuralNetworkLayer clone = new NeuralNetworkLayer(nInputs, nOutputs);
-
-        // Copy weights into clone
+        // Copy weights from this instance
         WrapperArray<float>[] _weights = new WrapperArray<float>[nInputs];
         for (int i = 0; i < nInputs; i++)
         {
@@ -51,9 +49,13 @@ public class NeuralNetworkLayer
             _weights[i] = wrapper;
         }
 
+        NeuralNetworkLayer clone = new NeuralNetworkLayer(nInputs, nOutputs);
+
         clone.weights = _weights;
 
         Array.Copy(biases, clone.biases, biases.Length);
+
+        clone.activationName = activationName;
 
         return clone;
     }
@@ -122,9 +124,7 @@ public class NeuralNetworkLayer
                 value += weights[j][i] * inputs[j];
             }
 
-            // TEMP
-            outputs[i] = value + biases[i];
-            //outputs[i] = ActivationMethod(value + biases[i]);
+            outputs[i] = ActivationTable.table[activationName](value + biases[i]);
         }
 
         return outputs;
@@ -135,15 +135,15 @@ public class NeuralNetworkLayer
         float weightTotal = 0;
         float biasTotal = 0;
 
-        foreach(WrapperArray<float> wrapper in weights)
+        foreach (WrapperArray<float> wrapper in weights)
         {
             foreach(float weight in wrapper)
             {
                 weightTotal += weight;
             }
         }
-        
-        foreach(float bias in biases)
+
+        foreach (float bias in biases)
         {
             biasTotal += bias;
         }

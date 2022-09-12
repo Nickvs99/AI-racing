@@ -7,7 +7,7 @@ public class NeuralNetwork
     public int[] layerSizes;
     public NeuralNetworkLayer[] layers;
 
-    public NeuralNetwork(int[] _layerSizes, Func<float> weightInitMethod = null, Func<float> biasInitMethod = null, Func<float, float> activationMethod = null)
+    public NeuralNetwork(int[] _layerSizes, Func<float> weightInitMethod = null, Func<float> biasInitMethod = null, string activationName = "Default")
     {
         if(weightInitMethod == null)
         {
@@ -17,11 +17,6 @@ public class NeuralNetwork
         if(biasInitMethod == null)
         {
             biasInitMethod = DefaultBiasInitMethod;
-        }
-
-        if(activationMethod == null)
-        {
-            activationMethod = DefaultActivationMethod;
         }
 
         layerSizes = _layerSizes;
@@ -43,7 +38,7 @@ public class NeuralNetwork
                 nOutputs = layerSizes[i + 1];
             }
 
-            layers[i] = new NeuralNetworkLayer(nInputs, nOutputs, weightInitMethod, biasInitMethod, activationMethod);
+            layers[i] = new NeuralNetworkLayer(nInputs, nOutputs, weightInitMethod, biasInitMethod, activationName);
         }
     }
 
@@ -107,10 +102,5 @@ public class NeuralNetwork
     public float DefaultBiasInitMethod()
     {
         return 0f;
-    }
-
-    public float DefaultActivationMethod(float x)
-    {
-        return 1f / (1f + (float) Math.Exp(-x));
     }
 }
