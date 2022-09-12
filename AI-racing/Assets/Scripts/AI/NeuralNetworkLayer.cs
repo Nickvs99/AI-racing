@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 [Serializable]
 public class NeuralNetworkLayer
@@ -11,11 +10,18 @@ public class NeuralNetworkLayer
     public WrapperArray<float>[] weights; // WrapperArray[] can be serialized as opposed to T[,]
     public float[] biases;
 
-
-    Func<float> WeightInitMethod;
-    Func<float> BiasInitMethod;
     public Func<float, float> ActivationMethod;
 
+    // Use this constructor if the weights and biases are manually set
+    public NeuralNetworkLayer(int _nInputs, int _nOutputs)
+    {
+        nInputs = _nInputs;
+        nOutputs = _nOutputs;
+
+        weights = new WrapperArray<float>[nInputs];
+        biases = new float[nOutputs];
+    }
+    
     public NeuralNetworkLayer(int _nInputs, int _nOutputs, Func<float> weightInitMethod, Func<float> biasInitMethod, Func<float, float> activationMethod)
     {
         nInputs = _nInputs;
@@ -24,14 +30,12 @@ public class NeuralNetworkLayer
         weights = InitWeights(weightInitMethod);
         biases = InitBiases(biasInitMethod);
 
-        WeightInitMethod = weightInitMethod;
-        BiasInitMethod = biasInitMethod;
         ActivationMethod = activationMethod;
     }
 
     public NeuralNetworkLayer Clone()
     {
-        NeuralNetworkLayer clone = new NeuralNetworkLayer(nInputs, nOutputs, WeightInitMethod, BiasInitMethod, ActivationMethod);
+        NeuralNetworkLayer clone = new NeuralNetworkLayer(nInputs, nOutputs);
 
         // Copy weights into clone
         WrapperArray<float>[] _weights = new WrapperArray<float>[nInputs];

@@ -87,10 +87,7 @@ public class EvolutionManager : PhysicsExtension
         // Save last completed agent
         if(Input.GetKeyDown("s"))
         {
-            int previousAgentIndex = (currentAgentIndex - 1) % (populationSize);
-            Debug.Log($"Save agent: {fitnesses[previousAgentIndex]}");
-
-            AgentData data = new AgentData(agent, neuralNetworks[previousAgentIndex]);
+            AgentData data = new AgentData(agent, overallBestNeuralNetwork);
             SaveManager.SaveAgent(data);
         }
 
@@ -187,7 +184,7 @@ max fuel: {agent.maxFuel}";
 
         if(fitness > overallBest)
         {
-            overallBestNeuralNetwork = agent.neuralNetwork;
+            overallBestNeuralNetwork = agent.neuralNetwork.Clone();
         }
 
         // If last agent of its generation has finished, create new generation

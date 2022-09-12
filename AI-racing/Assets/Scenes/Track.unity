@@ -778,13 +778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c1b34f0261602f4caf5a72cbc95c87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentData:
-    fov: 0
-    nrays: 0
-    neuralNetwork:
-      nLayers: 0
-      layerSizes: 
-      layers: []
   pathCreator: {fileID: 33461886}
   crashPenalty: 0.5
   hasFinished: 0
@@ -1790,7 +1783,7 @@ MonoBehaviour:
   hiddenLayerSizes: 
   loggerEnabled: 1
   pathFromAssets: ../../data/data.txt
-  customComment: Attempting new PR with a lot of generations!
+  customComment: Testing mutations with new weight structure
 --- !u!4 &1457292716
 Transform:
   m_ObjectHideFlags: 0

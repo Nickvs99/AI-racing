@@ -27,7 +27,6 @@ public class NeuralNetwork
         layerSizes = _layerSizes;
         nLayers = layerSizes.Length;
 
-        // Last layer does not need to be stored, since it is only a output layer
         layers = new NeuralNetworkLayer[nLayers];
         for (int i = 0; i < nLayers; i++)
         {
@@ -68,7 +67,7 @@ public class NeuralNetwork
     {
         NeuralNetwork clone = new NeuralNetwork(layerSizes);
         
-        for(int i = 0; i < nLayers - 1; i++)
+        for(int i = 0; i < nLayers; i++)
         {
             clone.layers[i] = layers[i].Clone();
         }
