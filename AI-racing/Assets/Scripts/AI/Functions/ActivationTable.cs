@@ -9,6 +9,9 @@ public static class ActivationTable
     {
         {"Default", Default},
         {"Sigmoid", Sigmoid},
+        {"SigmoidScaled", SigmoidScaled },
+        {"SigmoidScaledSharp", SigmoidScaledSharp },
+        {"SigmoidScaledSmooth", SigmoidScaledSmooth },
     };
 
     private static float Default(float x)
@@ -19,5 +22,22 @@ public static class ActivationTable
     private static float Sigmoid(float x)
     {
         return 1f / (1f + (float)Math.Exp(-x));
+    }
+
+    // Sigmoid function but with range -1 to 1
+    private static float SigmoidScaled(float x)
+    {
+        return 2f * Sigmoid(x) - 1f;
+    }
+
+    // Interestingly, this is the same as tanh
+    private static float SigmoidScaledSharp(float x)
+    {
+        return SigmoidScaled(2f * x);
+    }
+
+    private static float SigmoidScaledSmooth(float x)
+    {
+        return SigmoidScaled(0.5f * x);
     }
 }
