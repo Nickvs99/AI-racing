@@ -10,7 +10,11 @@ public class EvolutionManager : PhysicsExtension
     [SerializeField] private Agent agent;
 
     [SerializeField] private int populationSize = 5;
+    
+    [Header("Mutation parameters")]
     public float mutateProbability = 0.1f;
+    public string weightMutateName = "Default";
+    public string biasMutateName = "Default";
 
     private NeuralNetwork[] neuralNetworks;
     public float[] fitnesses;
@@ -285,29 +289,10 @@ max fuel: {agent.maxFuel}";
 
     private void MutateNetwork(NeuralNetwork neuralNetwork)
     {
-        neuralNetwork.Mutate(WeightMutateMethod, BiasMutateMethod);
-    }
+        Func<float, float, float> WeightMutateMethod = MutationTable.weightTable[weightMutateName];
+        Func<float, float, float> BiasMutateMethod = MutationTable.weightTable[biasMutateName];
 
-    private float WeightMutateMethod(float weight)
-    {
-        float mutation = 0;
-        float r = UnityEngine.Random.Range(0f, 1f);
-        if(r < mutateProbability)
-        {
-            mutation = UnityEngine.Random.Range(-0.5f, 0.5f);
-        }
-        return weight + mutation;
-    }
-
-    private float BiasMutateMethod(float bias)
-    {
-        float mutation = 0;
-        float r = UnityEngine.Random.Range(0f, 1f);
-        if (r < mutateProbability)
-        {
-            mutation = UnityEngine.Random.Range(-0.2f, 0.2f);
-        }
-        return bias + mutation;
+        neuralNetwork.Mutate(WeightMutateMethod, BiasMutateMethod, mutateProbability);
     }
 
     private float WeightInitMethod()

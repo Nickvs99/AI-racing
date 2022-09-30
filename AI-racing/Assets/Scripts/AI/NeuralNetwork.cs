@@ -86,11 +86,11 @@ public class NeuralNetwork
         return new Tuple<float, float>(totalWeight, totalBias);
     }
 
-    public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
+    public void Mutate(Func<float, float, float> WeightMutateMethod, Func<float, float, float> BiasMutateMethod, float mutateProbability)
     {
         for(int i = 0; i < layers.Length - 1; i++)
         {
-            layers[i].Mutate(WeightMutateMethod, BiasMutateMethod);
+            layers[i].Mutate(WeightMutateMethod, BiasMutateMethod, mutateProbability);
         }
     }
 

@@ -91,19 +91,19 @@ public class NeuralNetworkLayer
         return _biases;
     }
 
-    public void Mutate(Func<float, float> WeightMutateMethod, Func<float, float> BiasMutateMethod)
+    public void Mutate(Func<float, float, float> WeightMutateMethod, Func<float, float, float> BiasMutateMethod, float mutateProbability)
     {
         for (int i = 0; i < weights.Length; i++)
         {
             for (int j = 0; j < weights[i].Length; j++)
             {
-                weights[i][j] = WeightMutateMethod(weights[i][j]);
+                weights[i][j] = WeightMutateMethod(weights[i][j], mutateProbability);
             }
         }
 
         for(int i = 0; i < biases.Length; i++)
         {
-            biases[i] = BiasMutateMethod(biases[i]);
+            biases[i] = BiasMutateMethod(biases[i], mutateProbability);
         }
     }
     
