@@ -10,8 +10,13 @@ public class EvolutionManager : PhysicsExtension
     [SerializeField] private Agent agent;
 
     [SerializeField] private int populationSize = 5;
+
+    [Header("Methods")]
     public string selectionName = "Default";
-    
+    public string weightInitName = "Default";
+    public string biasInitname = "Default";
+    public string activationName = "Default";
+
     [Header("Mutation parameters")]
     public float mutateProbability = 0.1f;
     public string weightMutateName = "Default";
@@ -64,9 +69,9 @@ public class EvolutionManager : PhysicsExtension
         for (int i = 0; i < populationSize; i++)
         {
             neuralNetworks[i] = new NeuralNetwork(layerSizes,
-                weightInitName: "Default",
-                biasInitName: "Default",
-                activationName: "Default"
+                weightInitName: weightInitName,
+                biasInitName: biasInitname,
+                activationName: activationName
             );
         }
 
@@ -156,9 +161,19 @@ public class EvolutionManager : PhysicsExtension
 
         string initialText = $@"{customComment}
 {new String('-', 40)}
+seed: {seed}
+
 population size: {populationSize}
+selection method: {selectionName}
+
+mutate bias method: {biasMutateName}
+mutate weight method: {weightMutateName}
 mutate probability: {mutateProbability}
-hidden layer sizes: {string.Join(", ", hiddenLayerSizes)}
+
+init bias method: {biasInitname}
+init weight method: {weightInitName}
+activation method: {activationName}
+hidden layer sizes: [{string.Join(", ", hiddenLayerSizes)}]
 
 Agent details
 fov: {agent.fov}

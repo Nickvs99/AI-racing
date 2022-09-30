@@ -1774,7 +1774,13 @@ MonoBehaviour:
   display: {fileID: 429990439}
   agent: {fileID: 782720615}
   populationSize: 10
+  selectionName: Default
+  weightInitName: Default
+  biasInitname: Default
+  activationName: Default
   mutateProbability: 0.15
+  weightMutateName: Default
+  biasMutateName: Default
   fitnesses: []
   generation: 0
   currentAgentIndex: 0
