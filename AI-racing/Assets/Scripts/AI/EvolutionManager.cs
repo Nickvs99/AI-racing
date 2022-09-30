@@ -10,6 +10,7 @@ public class EvolutionManager : PhysicsExtension
     [SerializeField] private Agent agent;
 
     [SerializeField] private int populationSize = 5;
+    public string selectionName = "Default";
     
     [Header("Mutation parameters")]
     public float mutateProbability = 0.1f;
@@ -232,49 +233,17 @@ max fuel: {agent.maxFuel}";
         return networks;
     }
 
-    /// <summary>
-    /// Select the best performing neural networks. Their pick probability is proportional to their fitness difference
-    /// to the lowest fitness.
-    /// </summary>
-    /// <returns></returns>
+
     private NeuralNetwork[] NeuralNetworkSelection()
     {
         NeuralNetwork[] networks = new NeuralNetwork[populationSize];
 
-        // Cumulate fitness values
-        float[] cumFitnesses = new float[populationSize];
-        float cumFitness = 0;
+        Func<float[], int[]> SelectionMethod = SelectionTable.table[selectionName];
+        int[] indices = SelectionMethod(fitnesses);
 
-        float worstFitness = fitnesses.Min();
         for(int i = 0; i < populationSize; i++)
         {
-            // Worst fitness is substracted to allow negative fitness values. Also increases probability of higher
-            // performing neural networks once all fitness values are high.
-            cumFitness += fitnesses[i] - worstFitness;
-            cumFitnesses[i] = cumFitness;
-        }
-
-        // Normalise fitness
-        for(int i=0; i < populationSize; i++)
-        {
-            cumFitnesses[i] /= cumFitness;
-        }
-
-        for (int i = 0; i < populationSize; i++)
-        {
-            float r = UnityEngine.Random.Range(0f, 1f);
-
-            // Pick a neural network based on the normalised fitness
-            int index;
-            for(index = 0; index < populationSize - 1; index++)
-            {
-                if(r < cumFitnesses[index])
-                {
-                    break;
-                }
-            }
-
-            networks[i] = neuralNetworks[index].Clone();
+            networks[i] = neuralNetworks[indices[i]].Clone();
         }
 
         return networks;
@@ -291,7 +260,7 @@ max fuel: {agent.maxFuel}";
     private void MutateNetwork(NeuralNetwork neuralNetwork)
     {
         Func<float, float, float> WeightMutateMethod = MutationTable.weightTable[weightMutateName];
-        Func<float, float, float> BiasMutateMethod = MutationTable.weightTable[biasMutateName];
+        Func<float, float, float> BiasMutateMethod = MutationTable.biasTable[biasMutateName];
 
         neuralNetwork.Mutate(WeightMutateMethod, BiasMutateMethod, mutateProbability);
     }
