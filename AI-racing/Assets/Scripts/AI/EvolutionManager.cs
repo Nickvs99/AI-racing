@@ -63,7 +63,8 @@ public class EvolutionManager : PhysicsExtension
         for (int i = 0; i < populationSize; i++)
         {
             neuralNetworks[i] = new NeuralNetwork(layerSizes,
-                weightInitMethod: WeightInitMethod,
+                weightInitName: "Default",
+                biasInitName: "Default",
                 activationName: "Default"
             );
         }
@@ -293,10 +294,5 @@ max fuel: {agent.maxFuel}";
         Func<float, float, float> BiasMutateMethod = MutationTable.weightTable[biasMutateName];
 
         neuralNetwork.Mutate(WeightMutateMethod, BiasMutateMethod, mutateProbability);
-    }
-
-    private float WeightInitMethod()
-    {
-        return UnityEngine.Random.Range(-1f, 1f);
     }
 }
