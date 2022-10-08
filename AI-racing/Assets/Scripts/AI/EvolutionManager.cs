@@ -16,6 +16,7 @@ public class EvolutionManager : PhysicsExtension
     public string weightInitName = "Default";
     public string biasInitname = "Default";
     public string activationName = "Default";
+    public string terminationName = "Default";
 
     [Header("Mutation parameters")]
     public float mutateProbability = 0.1f;
@@ -46,6 +47,9 @@ public class EvolutionManager : PhysicsExtension
     private float overallWorst = Mathf.Infinity;
     private float overallBestAvg = Mathf.NegativeInfinity;
 
+    private List<float> avgFitnesses;
+    private List<float> maxFitnesses;
+
     private NeuralNetwork overallBestNeuralNetwork;
 
     private void Start()
@@ -57,6 +61,9 @@ public class EvolutionManager : PhysicsExtension
 
         generation = 0;
         currentAgentIndex = 0;
+
+        avgFitnesses = new List<float>();
+        maxFitnesses = new List<float>();
 
         // Determine layersizes of the neural networks
         List<int> layerSizesList = new List<int> { agent.nrays + 1 }; // Input (vision + car speed)
@@ -211,24 +218,7 @@ max fuel: {agent.maxFuel}";
         // If last agent of its generation has finished, create new generation
         if (currentAgentIndex == populationSize - 1)
         {
-            float currentBest = fitnesses.Max();
-            float currentWorst = fitnesses.Min();
-            float currentAvg = fitnesses.Average();
-
-            overallBest = Mathf.Max(overallBest, currentBest);
-            overallWorst = Mathf.Min(overallWorst, currentWorst);
-            overallBestAvg = Mathf.Max(overallBestAvg, currentAvg);
-
-            display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
-            display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
-
-            if (loggerEnabled)
-            {
-                dataLogger.Log();
-            }
-
-            neuralNetworks = CreateNextGeneration();
-            generation++;
+            OnGenerationFinish();
         }
 
         currentAgentIndex = (currentAgentIndex + 1) % populationSize;
@@ -237,6 +227,37 @@ max fuel: {agent.maxFuel}";
 
         agent.Init();
         agent.SetNeuralNetwork(neuralNetworks[currentAgentIndex]);
+    }
+
+    private void OnGenerationFinish()
+    {
+        float currentBest = fitnesses.Max();
+        float currentWorst = fitnesses.Min();
+        float currentAvg = fitnesses.Average();
+
+        avgFitnesses.Add(currentAvg);
+        maxFitnesses.Add(currentBest);
+
+        overallBest = Mathf.Max(overallBest, currentBest);
+        overallWorst = Mathf.Min(overallWorst, currentWorst);
+        overallBestAvg = Mathf.Max(overallBestAvg, currentAvg);
+
+        display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
+        display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
+
+        if (loggerEnabled)
+        {
+            dataLogger.Log();
+        }
+
+        if(TerminationTable.table[terminationName](avgFitnesses, maxFitnesses))
+        {
+            Debug.Log("This run has ended");
+            Debug.Break();
+        }
+
+        neuralNetworks = CreateNextGeneration();
+        generation++;
     }
 
     private NeuralNetwork[] CreateNextGeneration()

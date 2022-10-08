@@ -1779,6 +1779,7 @@ MonoBehaviour:
   weightInitName: Default
   biasInitname: Default
   activationName: SigmoidScaledSmooth
+  terminationName: Endless
   mutateProbability: 0.15
   weightMutateName: Default
   biasMutateName: Default
