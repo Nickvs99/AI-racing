@@ -1774,7 +1774,7 @@ MonoBehaviour:
   display: {fileID: 429990439}
   agent: {fileID: 782720615}
   populationSize: 10
-  selectionName: Softmax
+  selectionName: Tournament
   weightInitName: Default
   biasInitname: Default
   activationName: SigmoidScaledSmooth
@@ -1785,7 +1785,7 @@ MonoBehaviour:
   generation: 0
   currentAgentIndex: 0
   useFixedSeed: 0
-  seed: 487055020
+  seed: 507810488
   hiddenLayerSizes: 
   loggerEnabled: 1
   pathFromAssets: ../../data/data.txt

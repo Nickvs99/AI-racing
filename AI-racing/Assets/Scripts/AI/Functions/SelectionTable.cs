@@ -9,7 +9,8 @@ public static class SelectionTable
     public static Dictionary<string, Func<float[], int[]>> table = new Dictionary<string, Func<float[], int[]>>()
     {
         {"Default", Default},
-        {"Softmax", Softmax }
+        {"Softmax", Softmax },
+        {"Tournament", Tournament2 }
     };
 
     /// <summary>
@@ -96,7 +97,71 @@ public static class SelectionTable
             }
         }
 
-        Debug.LogError("No valid index was found. Could be due to a non sorted array or improper normalization.")
+        Debug.LogError("No valid index was found. Could be due to a non sorted array or improper normalization.");
         return index - 1;
+    }
+
+    private static int[] Tournament(float[] fitnesses, int tournamentSize)
+    {
+        int populationSize = fitnesses.Length;
+        int[] indices = new int[populationSize];
+
+        for (int i = 0; i < populationSize; i++)
+        {
+            // Pick n random indices
+            int[] tournamentIndices = SelectionSamplingIndices(populationSize, tournamentSize);
+            
+            // Get fitness value associated with those indices
+            float[] tournamentFitnesses = new float[tournamentSize];
+            for (int j = 0; j < tournamentIndices.Length; j++)
+            {
+                tournamentFitnesses[j] = fitnesses[tournamentIndices[j]];
+            }
+
+            // Select index with the max fitness in the tournament
+            int maxIndex = Array.IndexOf(fitnesses, tournamentFitnesses.Max());
+            indices[i] = maxIndex;
+        }
+
+        return indices;
+    }
+
+    /// <summary>
+    /// Returns n random indices from N elements, 0 < n <= N, each with equal probability. No duplicates allowed.
+    /// <see cref="https://stackoverflow.com/a/35065765"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="objs"></param>
+    /// <param name="sampleSize"></param>
+    /// <returns></returns>
+    private static int[] SelectionSamplingIndices(int N, int sampleSize)
+    {
+        int[] chosenIndices = new int[sampleSize];
+        int nChosen = 0;
+
+        for(int i = 0; i < N; i++)
+        {
+            float r = UnityEngine.Random.Range(0f, 1f);
+            float chosenProbability = ((float) sampleSize - nChosen) / (N - i);
+
+            if (r < chosenProbability)
+            {
+                chosenIndices[nChosen] = i;
+                nChosen += 1;
+
+                if (nChosen == sampleSize)
+                {
+                    return chosenIndices;
+                }
+            }
+        }
+
+        Debug.LogError("Error: Something went wrong with Selection sampling.");
+        return chosenIndices;
+    }
+
+    private static int[] Tournament2(float[] fitnesses)
+    {
+        return Tournament(fitnesses, 2);
     }
 }
