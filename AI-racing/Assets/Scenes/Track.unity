@@ -1774,10 +1774,10 @@ MonoBehaviour:
   display: {fileID: 429990439}
   agent: {fileID: 782720615}
   populationSize: 10
-  selectionName: Default
+  selectionName: Softmax
   weightInitName: Default
   biasInitname: Default
-  activationName: Default
+  activationName: SigmoidScaledSmooth
   mutateProbability: 0.15
   weightMutateName: Default
   biasMutateName: Default

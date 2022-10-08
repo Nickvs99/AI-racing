@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public static class SelectionTable
 {
@@ -8,6 +9,7 @@ public static class SelectionTable
     public static Dictionary<string, Func<float[], int[]>> table = new Dictionary<string, Func<float[], int[]>>()
     {
         {"Default", Default},
+        {"Softmax", Softmax }
     };
 
     /// <summary>
@@ -40,21 +42,61 @@ public static class SelectionTable
 
         for (int i = 0; i < populationSize; i++)
         {
-            float r = UnityEngine.Random.Range(0f, 1f);
-
-            // Pick a neural network index based on the normalised fitness
-            int index;
-            for (index = 0; index < populationSize - 1; index++)
-            {
-                if (r < cumFitnesses[index])
-                {
-                    break;
-                }
-            }
-
-            indices[i] = index;
+            indices[i] = GetRandomIndexFromSortedNormalizedArray(cumFitnesses);
         }
 
         return indices;
+    }
+
+    /// <summary>
+    /// Pick probability is set through the softmax function
+    /// </summary>
+    /// <param name="fitnesses"></param>
+    /// <returns></returns>
+    private static int[] Softmax(float[] fitnesses)
+    {
+        int populationSize = fitnesses.Length;
+        int[] indices = new int[populationSize];
+
+        // Substract maxFitness to prevent overflow
+        float maxFitness = fitnesses.Max();
+        float[] relativeFitnesses = fitnesses.Select(fitness => fitness - maxFitness).ToArray();
+
+        float totalFitness = 0;
+        foreach(float fitness in relativeFitnesses)
+        {
+            totalFitness += Mathf.Exp(fitness);
+        }
+
+        float[] cumFitnesses = new float[populationSize];
+        float cumFitness = 0;
+        for(int i = 0; i < populationSize; i++)
+        {
+            cumFitness += Mathf.Exp(relativeFitnesses[i]) / totalFitness;
+            cumFitnesses[i] = cumFitness;
+        }
+
+        for (int i = 0; i < populationSize; i++)
+        {
+            indices[i] = GetRandomIndexFromSortedNormalizedArray(cumFitnesses);
+        }
+
+        return indices;
+    }
+
+    private static int GetRandomIndexFromSortedNormalizedArray(float[] cumValues)
+    {
+        float r = UnityEngine.Random.Range(0f, 1f);
+        int index;
+        for (index = 0; index < cumValues.Length; index++)
+        {
+            if (r < cumValues[index])
+            {
+                return index;
+            }
+        }
+
+        Debug.LogError("No valid index was found. Could be due to a non sorted array or improper normalization.")
+        return index - 1;
     }
 }
