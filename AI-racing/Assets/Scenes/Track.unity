@@ -788,6 +788,7 @@ MonoBehaviour:
   minAgentHeight: -1
   minSpeed: 1
   minSpeedMaxDuration: 100
+  fitnessCheckPeriod: 500
   neuralNetwork:
     nLayers: 0
     layerSizes: 

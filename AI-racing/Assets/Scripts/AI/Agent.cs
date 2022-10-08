@@ -26,7 +26,9 @@ public class Agent : PhysicsExtension
     [SerializeField] private float minAgentHeight = -1f;
     [SerializeField] private float minSpeed = 0.001f;
     [SerializeField] private float minSpeedMaxDuration = 100f;
+    [SerializeField] private float fitnessCheckPeriod = 500f;
     private float minSpeedDuration;
+    private float prevFitness;
 
     public NeuralNetwork neuralNetwork;
 
@@ -54,6 +56,7 @@ public class Agent : PhysicsExtension
         hasCrashed = false;
 
         minSpeedDuration = 0f;
+        prevFitness = CalcFitness();
     }
 
     private void InitTransform()
@@ -83,6 +86,18 @@ public class Agent : PhysicsExtension
         else
         {
             minSpeedDuration = 0f;
+        }
+
+        // Check for backwards driving by comparing fitness values against a previous time
+        if (fuelLeft % fitnessCheckPeriod == 0)
+        {
+            float currentFitness = CalcFitness();
+            if (currentFitness < prevFitness)
+            {
+                hasCrashed = true;
+            }
+
+            prevFitness = currentFitness;
         }
 
         fuelLeft -= 1f;
