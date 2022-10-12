@@ -28,7 +28,7 @@ public class NeuralNetwork
                 nOutputs = layerSizes[i + 1];
             }
 
-            Func<float> weightInitMethod = InitializationTable.biasTable[weightInitName];
+            Func<float> weightInitMethod = InitializationTable.weightTable[weightInitName];
             Func<float> biasInitMethod = InitializationTable.biasTable[biasInitName];
             layers[i] = new NeuralNetworkLayer(nInputs, nOutputs, weightInitMethod, biasInitMethod, activationName);
         }
