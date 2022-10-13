@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class EvolutionProgressDisplay : MonoBehaviour
 {
-    [SerializeField] private EvolutionManager manager;
-
+    [SerializeField] private TMP_Text runField;
     [SerializeField] private TMP_Text generationProgressField;
     [SerializeField] private TMP_Text previousGenerationField;
     [SerializeField] private TMP_Text overallGenerationField;
+
+    public void UpdateRunField(int currentRun)
+    {
+        runField.text = $"Run: {currentRun}";
+    }
 
     public void UpdateGenerationProgressField(int generation, int agentIndex)
     {

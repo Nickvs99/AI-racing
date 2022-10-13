@@ -104,8 +104,7 @@ public class EvolutionManager : PhysicsExtension
 
         agent.SetNeuralNetwork(neuralNetworks[0]);
 
-        // TODO display current run
-
+        display.UpdateRunField(currentRun);
         display.UpdateGenerationProgressField(generation, currentAgentIndex);
         display.UpdatePreviousGenerationField(0f, 0f, 0f);
         display.UpdateOverallField(0f, 0f, 0f);
@@ -292,13 +291,12 @@ max fuel: {agent.maxFuel}";
             Debug.Break();
             return;
         }
+        currentRun += 1;
 
         InitRun();
 
         dataLogger.WriteRowSeparator();
         dataLogger.WriteHeader();
-
-        currentRun += 1;
     }
 
     private NeuralNetwork[] CreateNextGeneration()
