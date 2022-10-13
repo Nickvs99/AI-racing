@@ -28,13 +28,13 @@ public class DataLogger
         if (initialText.Length > 0)
         {
             WriteLine(initialText);
-            WriteRowSeperator();
+            WriteRowSeparator();
         }
 
         WriteHeader();
     }
 
-    private void WriteHeader()
+    public void WriteHeader()
     {
         string content = string.Join(",", logMethods.Select(x => x.Item1).ToArray());
         WriteLine(content);
@@ -45,14 +45,19 @@ public class DataLogger
         File.AppendAllText(path, content + Environment.NewLine);
     }
 
-    private void WriteRowSeperator()
+    public void WriteRowSeparator()
     {
-        WriteLine(new String('-', 40));
+        WriteLine(GetSeparatorRow());
     }
 
     public void Log()
     {
         string content = string.Join(",", logMethods.Select(x => x.Item2()).ToArray());
         WriteLine(content);
+    }
+
+    public static string GetSeparatorRow()
+    {
+        return new String('-', 40);
     }
 }

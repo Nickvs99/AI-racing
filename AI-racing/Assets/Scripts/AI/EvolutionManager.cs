@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class EvolutionManager : PhysicsExtension
 {
+    [SerializeField] private int nRuns = 1;
+    
+    private int currentRun;
+
     [SerializeField] EvolutionProgressDisplay display;
     [SerializeField] private Agent agent;
 
@@ -43,9 +47,9 @@ public class EvolutionManager : PhysicsExtension
     [SerializeField] [TextArea(3, 10)] private string customComment = "";
     private DataLogger dataLogger;
 
-    private float overallBest = Mathf.NegativeInfinity;
-    private float overallWorst = Mathf.Infinity;
-    private float overallBestAvg = Mathf.NegativeInfinity;
+    private float runBest;
+    private float runWorst;
+    private float runBestAvg;
 
     private List<float> avgFitnesses;
     private List<float> maxFitnesses;
@@ -59,11 +63,7 @@ public class EvolutionManager : PhysicsExtension
         neuralNetworks = new NeuralNetwork[populationSize];
         fitnesses = new float[populationSize];
 
-        generation = 0;
-        currentAgentIndex = 0;
-
-        avgFitnesses = new List<float>();
-        maxFitnesses = new List<float>();
+        currentRun = 0;
 
         // Determine layersizes of the neural networks
         List<int> layerSizesList = new List<int> { agent.nrays + 1 }; // Input (vision + car speed)
@@ -71,6 +71,26 @@ public class EvolutionManager : PhysicsExtension
         layerSizesList.Add(3);                                        // Output (engine, brake, steering)
 
         layerSizes = layerSizesList.ToArray();
+
+        InitRun();
+
+        if (loggerEnabled)
+        {
+            InitLogger();
+        }
+
+        Physics.autoSimulation = false;
+    }
+
+    private void InitRun()
+    {
+        generation = 0;
+        currentAgentIndex = 0;
+
+        avgFitnesses = new List<float>();
+        maxFitnesses = new List<float>();
+
+        InitRunScores();
 
         // Create initial networks
         for (int i = 0; i < populationSize; i++)
@@ -84,16 +104,11 @@ public class EvolutionManager : PhysicsExtension
 
         agent.SetNeuralNetwork(neuralNetworks[0]);
 
+        // TODO display current run
+
         display.UpdateGenerationProgressField(generation, currentAgentIndex);
         display.UpdatePreviousGenerationField(0f, 0f, 0f);
         display.UpdateOverallField(0f, 0f, 0f);
-
-        if(loggerEnabled)
-        {
-            InitLogger();
-        }
-
-        Physics.autoSimulation = false;
     }
 
     private void Update()
@@ -167,8 +182,10 @@ public class EvolutionManager : PhysicsExtension
         };
 
         string initialText = $@"{customComment}
-{new String('-', 40)}
+{DataLogger.GetSeparatorRow()}
 seed: {seed}
+
+nruns: {nRuns}
 
 population size: {populationSize}
 selection method: {selectionName}
@@ -190,6 +207,13 @@ max fuel: {agent.maxFuel}";
         string path = Path.Combine(Application.dataPath, pathFromAssets);
         dataLogger = new DataLogger(logMethod, path, initialText: initialText);
     }
+    
+    private void InitRunScores()
+    {
+        runBest = Mathf.NegativeInfinity;
+        runWorst = Mathf.Infinity;
+        runBestAvg = Mathf.NegativeInfinity;
+    }
 
     public override void PhysicsUpdate()
     {
@@ -209,9 +233,9 @@ max fuel: {agent.maxFuel}";
         float fitness = agent.CalcFitness();
         fitnesses[currentAgentIndex] = fitness;
 
-        if(fitness > overallBest)
+        if(fitness > runBest)
         {
-            overallBest = fitness;
+            runBest = fitness;
             overallBestNeuralNetwork = agent.neuralNetwork.Clone();
         }
 
@@ -238,12 +262,12 @@ max fuel: {agent.maxFuel}";
         avgFitnesses.Add(currentAvg);
         maxFitnesses.Add(currentBest);
 
-        overallBest = Mathf.Max(overallBest, currentBest);
-        overallWorst = Mathf.Min(overallWorst, currentWorst);
-        overallBestAvg = Mathf.Max(overallBestAvg, currentAvg);
+        runBest = Mathf.Max(runBest, currentBest);
+        runWorst = Mathf.Min(runWorst, currentWorst);
+        runBestAvg = Mathf.Max(runBestAvg, currentAvg);
 
         display.UpdatePreviousGenerationField(currentBest, currentWorst, currentAvg);
-        display.UpdateOverallField(overallBest, overallWorst, overallBestAvg);
+        display.UpdateOverallField(runBest, runWorst, runBestAvg);
 
         if (loggerEnabled)
         {
@@ -252,12 +276,29 @@ max fuel: {agent.maxFuel}";
 
         if(TerminationTable.table[terminationName](avgFitnesses, maxFitnesses))
         {
-            Debug.Log("This run has ended");
-            Debug.Break();
+            OnRunFinish();
+            return;
         }
 
         neuralNetworks = CreateNextGeneration();
         generation++;
+    }
+
+    private void OnRunFinish()
+    {
+        if (currentRun == nRuns - 1)
+        {
+            Debug.Log("All runs have completed.");
+            Debug.Break();
+            return;
+        }
+
+        InitRun();
+
+        dataLogger.WriteRowSeparator();
+        dataLogger.WriteHeader();
+
+        currentRun += 1;
     }
 
     private NeuralNetwork[] CreateNextGeneration()

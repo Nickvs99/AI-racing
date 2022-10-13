@@ -7,12 +7,23 @@ public static class TerminationTable
     public static Dictionary<string, Func<List<float>, List<float>, bool>> table = new Dictionary<string, Func<List<float>, List<float>, bool>>()
     {
         {"Default", Endless },
-        {"Endless", Endless }
-
+        {"Endless", Endless },
+        {"Fixed", Fixed },
+        {"Short", Short },
     };
 
     private static bool Endless(List<float> avgs, List<float> maxs)
     {
         return false;
+    }
+
+    private static bool Fixed(List<float> avgs, List<float> maxs)
+    {
+        return avgs.Count >= 25;
+    }
+
+    private static bool Short(List<float> avgs, List<float> maxs)
+    {
+        return avgs.Count >= 5;
     }
 }
