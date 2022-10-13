@@ -8,16 +8,17 @@ public static class SelectionTable
     // Each method takes an array of floats (fitnesses) and returns the selected indices based on the fitness
     public static Dictionary<string, Func<float[], int[]>> table = new Dictionary<string, Func<float[], int[]>>()
     {
-        {"Default", Default},
+        {"Default", LinearProportional},
+        {"LinearProportional", LinearProportional},
         {"Softmax", Softmax },
         {"Tournament", Tournament2 }
     };
 
     /// <summary>
-    /// Pick probability is proportional to their fitness differenceto the lowest fitness.
+    /// Pick probability is linearly proportional to their fitness difference to the lowest fitness.
     /// </summary>
     /// <returns></returns>
-    private static int[] Default(float[] fitnesses)
+    private static int[] LinearProportional(float[] fitnesses)
     {
         int populationSize = fitnesses.Length;
         int[] indices = new int[populationSize];
@@ -27,11 +28,22 @@ public static class SelectionTable
         float cumFitness = 0;
 
         float worstFitness = fitnesses.Min();
+        float bestFitness = fitnesses.Max();
+
         for (int i = 0; i < populationSize; i++)
         {
             // Worst fitness is substracted to allow negative fitness values. Also increases probability of higher
-            // performing neural networks once all fitness values are high.
-            cumFitness += fitnesses[i] - worstFitness;
+            // performing neural networks once all fitness values are high. Should only be applied when all the values
+            // are not the same.
+            if(bestFitness == worstFitness)
+            {
+                cumFitness += fitnesses[i];
+            }
+            else
+            {
+                cumFitness += fitnesses[i] - worstFitness;
+            }
+
             cumFitnesses[i] = cumFitness;
         }
 
