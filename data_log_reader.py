@@ -15,23 +15,32 @@ class DataLogReader:
 
         # The data file is constructed in several sections, which are seperated by a seperator row
         # The seperator row is a bunch of ---------------------
-        self.sections = self.determine_sections(lines)
+        sections = self.determine_sections(lines)
 
-        data_section = self.sections[-1]
+        self.custom_comment = sections[0]
+        self.parameter_cmomment = sections[1]
         
-        self.header = data_section[0].strip().split(seperator)
+        data_sections = sections[2:]
+        
+        self.nruns = len(data_sections)
+        self.header = data_sections[0][0].strip().split(seperator)
         
         self.data = []
-        for row in data_section[1:]:
-
-            row_values = row.split(seperator)
+        for data_section in data_sections:
             
-            if types:
-                for i in range(len(row_values)):
-                    row_values[i] = types[i](row_values[i])
+            data_run = []
+            for row in data_section[1:]:
 
-            self.data.append(row_values)
-    
+                row_values = row.split(seperator)
+                
+                if types:
+                    for i in range(len(row_values)):
+                        row_values[i] = types[i](row_values[i])
+
+                data_run.append(row_values)
+
+            self.data.append(data_run)
+        
     def determine_sections(self, lines):
 
         sections = []
@@ -54,11 +63,11 @@ class DataLogReader:
 
         return sections
 
-    def get_row(self, index):
+    def get_run(self, index):
         return self.data[index]
     
     def get_column_by_index(self, index):
-        return [row[index] for row in self.data]
+        return [[row[index] for row in data_section] for data_section in self.data]
 
     def get_column_by_heading(self, header):
         
@@ -71,8 +80,9 @@ def main():
     reader = DataLogReader("data/data.txt", types=[int, float, float, float])
 
     print(reader.header)
-    for row in reader.data:
-        print(row)
+    print(reader.get_run(0))
+    print(reader.get_column_by_index(1))
+    print(reader.get_column_by_heading("Generation"))
 
 if __name__ == "__main__":
     main()
