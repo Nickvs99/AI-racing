@@ -1,3 +1,6 @@
+import numpy as np
+import numpy.ma as ma
+
 class DataLogReader:
 
     def __init__(self, path, seperator=",", types=None):
@@ -40,6 +43,8 @@ class DataLogReader:
                 data_run.append(row_values)
 
             self.data.append(data_run)
+
+        self.n_max_generations = max([len(values) for values in self.get_data_by_index(0)])
         
     def determine_sections(self, lines):
 
@@ -66,14 +71,38 @@ class DataLogReader:
     def get_run(self, index):
         return self.data[index]
     
-    def get_column_by_index(self, index):
+    def get_data_by_index(self, index):
         return [[row[index] for row in data_section] for data_section in self.data]
 
-    def get_column_by_heading(self, header):
+    def get_data_by_heading(self, header):
         
         index = self.header.index(header)
-        
-        return self.get_column_by_index(index)
+        return self.get_data_by_index(index)
+
+    def get_homogeneous_data_by_heading(self, header):
+        """
+        Returns the data in a homogeneous data format, e.g. all rows have the same length.
+        This is done, because then numpy will work on the data. The extra data points
+        needed to create a homogenous matrix are masked away.
+        """
+
+        n_rows = self.nruns
+        n_cols = self.n_max_generations
+
+        data = self.get_data_by_heading(header)
+
+        homogeneous_data = np.empty((n_rows, n_cols))
+        homogeneous_data.fill(None)
+
+        mask = np.empty((n_rows, n_cols))
+        mask.fill(1)
+
+        for i in range(len(data)):
+            for j in range(len(data[i])):
+                homogeneous_data[i, j] = data[i][j]
+                mask[i, j] = 0
+
+        return ma.masked_array(homogeneous_data, mask)
 
 def main():
     
@@ -81,8 +110,10 @@ def main():
 
     print(reader.header)
     print(reader.get_run(0))
-    print(reader.get_column_by_index(1))
-    print(reader.get_column_by_heading("Generation"))
+    print(reader.get_data_by_index(1))
+    print(reader.get_data_by_heading("Generation"))
+
+    print(reader.get_homogeneous_data_by_heading("Generation"))
 
 if __name__ == "__main__":
     main()
