@@ -102,6 +102,7 @@ public class EvolutionManager : PhysicsExtension
             );
         }
 
+        agent.Init();
         agent.SetNeuralNetwork(neuralNetworks[0]);
 
         display.UpdateRunField(currentRun);
@@ -242,9 +243,10 @@ max fuel: {agent.maxFuel}";
         if (currentAgentIndex == populationSize - 1)
         {
             OnGenerationFinish();
+            return;
         }
 
-        currentAgentIndex = (currentAgentIndex + 1) % populationSize;
+        currentAgentIndex++;
 
         display.UpdateGenerationProgressField(generation, currentAgentIndex);
 
@@ -280,7 +282,13 @@ max fuel: {agent.maxFuel}";
         }
 
         neuralNetworks = CreateNextGeneration();
+
+        currentAgentIndex = 0;
         generation++;
+
+        agent.Init();
+        agent.SetNeuralNetwork(neuralNetworks[currentAgentIndex]);
+        display.UpdateGenerationProgressField(generation, currentAgentIndex);
     }
 
     private void OnRunFinish()
@@ -307,7 +315,6 @@ max fuel: {agent.maxFuel}";
 
         return networks;
     }
-
 
     private NeuralNetwork[] NeuralNetworkSelection()
     {
