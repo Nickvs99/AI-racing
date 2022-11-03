@@ -10,6 +10,7 @@ public static class TerminationTable
         {"Endless", Endless },
         {"Fixed", Fixed },
         {"Short", Short },
+        {"Long", Long },
     };
 
     private static bool Endless(List<float> avgs, List<float> maxs)
@@ -25,5 +26,10 @@ public static class TerminationTable
     private static bool Short(List<float> avgs, List<float> maxs)
     {
         return avgs.Count >= 5;
+    }
+
+    private static bool Long(List<float> avgs, List<float> maxs)
+    {
+        return avgs.Count >= 1000;
     }
 }
