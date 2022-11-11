@@ -11,6 +11,7 @@ public static class TerminationTable
         {"Fixed", Fixed },
         {"Short", Short },
         {"Long", Long },
+        {"Research", Research }
     };
 
     private static bool Endless(List<float> avgs, List<float> maxs)
@@ -31,5 +32,14 @@ public static class TerminationTable
     private static bool Long(List<float> avgs, List<float> maxs)
     {
         return avgs.Count >= 1000;
+    }
+
+    private static bool Research(List<float> avgs, List<float> maxs)
+    {
+        // Current avg value should be greater than the avg value N generations ago.
+        // Read more about it in the termination.ipynb notebook
+        int N = 50;
+
+        return avgs.Count > N && avgs[avgs.Count - 1] < avgs[avgs.Count - 1 - N];
     }
 }
