@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class EvolutionManager : PhysicsExtension
 {
+    [SerializeField] private bool autoSimulation = false;
     [SerializeField] private int nRuns = 1;
     
     private int currentRun;
@@ -79,7 +80,7 @@ public class EvolutionManager : PhysicsExtension
             InitLogger();
         }
 
-        Physics.autoSimulation = false;
+        Physics.autoSimulation = autoSimulation;
     }
 
     private void InitRun()
@@ -141,8 +142,7 @@ public class EvolutionManager : PhysicsExtension
 
     public void Run()
     {
-        int i = 0;
-        while(!agent.hasFinished && i < 1000)
+        while(!agent.hasFinished)
         {
             PhysicsUpdate();
 

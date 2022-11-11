@@ -89,7 +89,8 @@ public class Agent : PhysicsExtension
         }
 
         // Check for backwards driving by comparing fitness values against a previous time
-        if (fuelLeft % fitnessCheckPeriod == 0)
+        // Does not need to occur when the car hasn't driven yet
+        if (fuelLeft % fitnessCheckPeriod == 0 && fuelLeft != maxFuel)
         {
             float currentFitness = CalcFitness();
             if (currentFitness < prevFitness)
