@@ -1149,7 +1149,7 @@ MonoBehaviour:
   pathCreator: {fileID: 33461886}
   crashPenalty: 0.5
   hasFinished: 0
-  maxFuel: 1000
+  maxFuel: 5000
   fuelLeft: 0
   fov: 60
   nrays: 5
@@ -2884,6 +2884,7 @@ MonoBehaviour:
   mutationRates:
   - 0
   - 0.15
+  - 0.5
   weightMutateNames:
   - Default
   biasMutateNames:
@@ -2892,6 +2893,9 @@ MonoBehaviour:
     array:
     - array: 
     - array: 04000000
+  fovs:
+  - 60
+  nrayss: 05000000
 --- !u!4 &2114792891
 Transform:
   m_ObjectHideFlags: 0

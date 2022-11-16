@@ -27,6 +27,9 @@ public class BatchRunner : MonoBehaviour
 
     public WrapperArray<WrapperArray<int>> hiddenLayersValues;
 
+    public float[] fovs = new float[] { 60f };
+    public int[] nrayss = new int[] { 5 };
+
     private IEnumerable<EvolutionParameters> permutations;
     private IEnumerator enumerator;
 
@@ -110,8 +113,14 @@ public class BatchRunner : MonoBehaviour
                                     {
                                         foreach(WrapperArray<int>  hiddenLayers in hiddenLayersValues)
                                         {
-                                            yield return new EvolutionParameters(populationSize, selectionName, weightInitName, biasInitName,
-                                                activationName, mutationValue, weightMutateName, biasMutateName, hiddenLayers.array);
+                                            foreach(float fov in fovs)
+                                            {
+                                                foreach(int nrays in nrayss)
+                                                {
+                                                    yield return new EvolutionParameters(populationSize, selectionName, weightInitName, biasInitName,
+                                                            activationName, mutationValue, weightMutateName, biasMutateName, hiddenLayers.array, fov, nrays);
+                                                }
+                                            }
                                         }
                                     }
                                 }

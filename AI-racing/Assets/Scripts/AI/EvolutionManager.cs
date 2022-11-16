@@ -127,6 +127,9 @@ public class EvolutionManager : PhysicsExtension
         weightMutateName = parameters.weightInitName;
         biasMutateName = parameters.biasMutateName;
         hiddenLayerSizes = parameters.hiddenLayers;
+
+        agent.fov = parameters.fov;
+        agent.nrays = parameters.nrays;
     }
 
     private void Update()

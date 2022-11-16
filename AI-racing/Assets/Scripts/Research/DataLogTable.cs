@@ -33,7 +33,7 @@ public class DataLogTable
 
     private void WriteHeader()
     {
-        string header = "ID,populationSize,selectionName,weightInitName,biasInitName,activationName,mutationRate,weightMutateName,biasMutateName,hiddenLayers";
+        string header = "ID,populationSize,selectionName,weightInitName,biasInitName,activationName,mutationRate,weightMutateName,biasMutateName,hiddenLayers,fov,nrays";
         WriteLine(header);
     }
 
