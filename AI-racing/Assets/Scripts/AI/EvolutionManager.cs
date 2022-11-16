@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class EvolutionManager : PhysicsExtension
 {
-    [SerializeField] private bool autoSimulation = false;
     [SerializeField] private int nRuns = 1;
     
     private int currentRun;
@@ -57,9 +56,16 @@ public class EvolutionManager : PhysicsExtension
 
     private NeuralNetwork overallBestNeuralNetwork;
 
+    public bool hasCompleted = false;
+
     private void Start()
     {
         InitRNG();
+    }
+
+    public void InitManager()
+    {
+        hasCompleted = false;
 
         neuralNetworks = new NeuralNetwork[populationSize];
         fitnesses = new float[populationSize];
@@ -79,8 +85,6 @@ public class EvolutionManager : PhysicsExtension
         {
             InitLogger();
         }
-
-        Physics.autoSimulation = autoSimulation;
     }
 
     private void InitRun()
@@ -112,6 +116,20 @@ public class EvolutionManager : PhysicsExtension
         display.UpdateOverallField(0f, 0f, 0f);
     }
 
+    public void SetParameters(int _populationSize, string _selectionName, string _weightInitName, string _biasInitName, 
+        string _activationName, float _mutationValue, string _weightMutateName, string _biasMutateName, int[] _hiddenLayers)
+    {
+        populationSize = _populationSize;
+        selectionName = _selectionName;
+        weightInitName = _weightInitName;
+        biasInitname = _biasInitName;
+        activationName = _activationName;
+        mutateProbability = _mutationValue;
+        weightMutateName = _weightInitName;
+        biasMutateName = _biasMutateName;
+        hiddenLayerSizes = _hiddenLayers;
+    }
+
     private void Update()
     {
         // Toggle learn rate
@@ -136,8 +154,9 @@ public class EvolutionManager : PhysicsExtension
             Physics.autoSimulation = true;
         }
 
-        if (!Physics.autoSimulation)
-            Run();
+        // Needed when the evolution manager is not ran through the batchrunner
+        //if (!Physics.autoSimulation)
+        //    Run();
     }
 
     public void Run()
@@ -295,10 +314,10 @@ max fuel: {agent.maxFuel}";
     {
         if (currentRun == nRuns - 1)
         {
-            Debug.Log("All runs have completed.");
-            Debug.Break();
+            hasCompleted = true;
             return;
         }
+
         currentRun += 1;
 
         InitRun();

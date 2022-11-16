@@ -112,7 +112,9 @@ public class Agent : PhysicsExtension
         {
             return;
         }
-        
+
+        if (neuralNetwork.nLayers == 0) return;
+
         float[] neuralNetworkInput = new float[neuralNetwork.GetLayerSize(0)];
 
         float[] rayDistances = GetVisionDistances();

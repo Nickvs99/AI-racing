@@ -483,6 +483,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218265596}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &220458980 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4837801160553823938, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+  m_PrefabInstance: {fileID: 1686065994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &264620635
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,6 +2077,44 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017487616}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1025523457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4843719855945383591, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+  m_PrefabInstance: {fileID: 4843719855955065890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1052658239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4843719856091419462, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+  m_PrefabInstance: {fileID: 4843719855955065890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1117189901 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 580311279415431662, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+  m_PrefabInstance: {fileID: 1686065994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1122764057 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4843719856591231637, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+  m_PrefabInstance: {fileID: 4843719855955065890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 609345c1b72413a47a384f2b5ae47457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127292744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2264,6 +2307,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1191454252}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1204098351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4843719855698682491, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+  m_PrefabInstance: {fileID: 4843719855955065890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1242052884
 GameObject:
   m_ObjectHideFlags: 0
@@ -2744,6 +2798,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341259391}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1360086115 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4843719855313650927, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+  m_PrefabInstance: {fileID: 4843719855955065890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5909b9480a91ca46a2cb54c603e4c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1360086116 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4843719855313650921, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+  m_PrefabInstance: {fileID: 4843719855955065890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1363301776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3900,14 +3976,54 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 736713541882751407, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applyBrakes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 736713541882751407, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applySteering
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 736713541882751407, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applyMotorForce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 736713541882751407, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: wheelVisualTransform
+      value: 
+      objectReference: {fileID: 1780993946}
     - target: {fileID: 896008054905639329, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
       propertyPath: maxForce
-      value: 30000
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 1248598967819147742, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
+    - target: {fileID: 1353273067626024200, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applyBrakes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353273067626024200, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applySteering
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353273067626024200, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applyMotorForce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353273067626024200, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: wheelVisualTransform
+      value: 
+      objectReference: {fileID: 1117189901}
+    - target: {fileID: 1715571806968823147, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applyBrakes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1715571806968823147, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: wheelVisualTransform
+      value: 
+      objectReference: {fileID: 220458980}
     - target: {fileID: 1880317207959290724, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3951,6 +4067,22 @@ PrefabInstance:
     - target: {fileID: 1880317207959290724, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832529091688157819, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: maxForce
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5286578991089276319, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: applyBrakes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5286578991089276319, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: wheelVisualTransform
+      value: 
+      objectReference: {fileID: 2054150876}
+    - target: {fileID: 8343378655165719151, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+      propertyPath: maxSteeringAngle
+      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
@@ -4168,6 +4300,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758023326}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1780993946 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3570975274930632670, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+  m_PrefabInstance: {fileID: 1686065994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1782246129
 GameObject:
   m_ObjectHideFlags: 0
@@ -4810,6 +4947,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045962557}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &2054150876 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4378188931278180833, guid: c4cad50aa03bbca42938fe318344950b, type: 3}
+  m_PrefabInstance: {fileID: 1686065994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4843719855955065890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4817,6 +4959,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 338538695}
     m_Modifications:
+    - target: {fileID: 4843719855313650927, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+      propertyPath: speedField
+      value: 
+      objectReference: {fileID: 1360086116}
+    - target: {fileID: 4843719856591231637, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+      propertyPath: brakeInputElement
+      value: 
+      objectReference: {fileID: 1025523457}
+    - target: {fileID: 4843719856591231637, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+      propertyPath: engineInputElement
+      value: 
+      objectReference: {fileID: 1052658239}
+    - target: {fileID: 4843719856591231637, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+      propertyPath: steeringInputElement
+      value: 
+      objectReference: {fileID: 1204098351}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4909,6 +5067,14 @@ PrefabInstance:
       propertyPath: carManager
       value: 
       objectReference: {fileID: 570177363}
+    - target: {fileID: 8793385801612715109, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+      propertyPath: speedometer
+      value: 
+      objectReference: {fileID: 1360086115}
+    - target: {fileID: 8793385801612715109, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
+      propertyPath: carInputDisplay
+      value: 
+      objectReference: {fileID: 1122764057}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
 --- !u!224 &4843719855955065891 stripped
