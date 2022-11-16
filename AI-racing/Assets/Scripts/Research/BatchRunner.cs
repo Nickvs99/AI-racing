@@ -32,6 +32,8 @@ public class BatchRunner : MonoBehaviour
 
     private IEnumerable<EvolutionParameters> permutations;
     private IEnumerator enumerator;
+    private EvolutionParameters parameters;
+    private int currentID;
 
     private void Awake()
     {
@@ -55,6 +57,9 @@ public class BatchRunner : MonoBehaviour
     {
         if (manager.hasCompleted)
         {
+            // Add parameter combination to parameter map file once finished
+            dataLogTable.AddNewID(parameters);
+
             InitNextExperiment();
         }
         else
@@ -73,7 +78,7 @@ public class BatchRunner : MonoBehaviour
             return;
         }
 
-        EvolutionParameters parameters  = (EvolutionParameters) enumerator.Current;
+        parameters  = (EvolutionParameters) enumerator.Current;
         Debug.Log($"Current: {parameters}");
 
         // check if parameter combination exists
@@ -83,9 +88,10 @@ public class BatchRunner : MonoBehaviour
             return;
         }
 
-        // Add parameter combination to parameter map file
-        int ID = dataLogTable.AddNewID(parameters);
-        manager.pathFromAssets = $"../../data/data - {ID}.txt"; // TODO should be set through inspector
+        currentID = dataLogTable.GetNewID();
+
+        // Set new data log path
+        manager.pathFromAssets = $"../../data/data - {currentID}.txt"; // TODO should be set through inspector
 
         // Initialize manager
         manager.SetParameters(parameters);

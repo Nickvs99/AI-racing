@@ -10,7 +10,7 @@ using UnityEngine;
 public class DataLogTable
 {
     private string path;
-    private int lastID;
+    private int nextID;
 
     public DataLogTable(string _path)
     {
@@ -18,7 +18,7 @@ public class DataLogTable
 
         InitFile();
 
-        lastID = GetLastID();
+        nextID = GetLastID() + 1;
     }
 
     private void InitFile()
@@ -55,15 +55,17 @@ public class DataLogTable
         return Int32.Parse(lineSeperated[0]);
     }
 
-    public int AddNewID(EvolutionParameters parameters)
+    public void AddNewID(EvolutionParameters parameters)
     {
-        int ID = lastID + 1;
-        lastID = ID;
-
-        string row = $"{ID},{parameters}";
+        string row = $"{nextID},{parameters}";
         WriteLine(row);
 
-        return ID;
+        nextID++;
+    }
+
+    public int GetNewID()
+    {
+        return nextID;
     }
 
     public bool CheckFileExists(EvolutionParameters parameters)
