@@ -1973,7 +1973,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04c5b5ed23040a4fa1049b09bcd3a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoSimulation: 1
   nRuns: 5
   display: {fileID: 429990439}
   agent: {fileID: 782720614}
@@ -2871,6 +2870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cbce3eac117284796928193aece3d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataLogTablePath: ../../data/datatable.txt
   manager: {fileID: 1457292715}
   populationSizes: 05000000
   selectionNames:
@@ -2881,10 +2881,9 @@ MonoBehaviour:
   - Default
   activationNames:
   - Default
-  mutationValues:
-  - 0.05
+  mutationRates:
+  - 0
   - 0.15
-  - 0.5
   weightMutateNames:
   - Default
   biasMutateNames:
@@ -2892,6 +2891,7 @@ MonoBehaviour:
   hiddenLayersValues:
     array:
     - array: 
+    - array: 04000000
 --- !u!4 &2114792891
 Transform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,9 @@ using UnityEngine;
 /// </summary>
 public class BatchRunner : MonoBehaviour
 {
+    [SerializeField] private string dataLogTablePath = "";
+    private DataLogTable dataLogTable;
+
     [SerializeField] private EvolutionManager manager;
 
     public int[] populationSizes = new int[] { 5 };
@@ -35,6 +39,11 @@ public class BatchRunner : MonoBehaviour
     {
         permutations = GetAllPermutations();
         enumerator = permutations.GetEnumerator();
+        
+        string path = Path.Combine(Application.dataPath, dataLogTablePath);
+        dataLogTable = new DataLogTable(path);
+
+        manager.loggerEnabled = true;
 
         InitNextExperiment();
     }
@@ -62,17 +71,21 @@ public class BatchRunner : MonoBehaviour
         }
 
         EvolutionParameters parameters  = (EvolutionParameters) enumerator.Current;
-        Debug.Log($"{parameters.populationSize}, {parameters.selectionName}, {parameters.mutationRate}");
+        Debug.Log($"Current: {parameters}");
 
-        // TODO check if parameter combination exists
+        // check if parameter combination exists
+        if(dataLogTable.CheckFileExists(parameters))
+        {
+            manager.hasCompleted = true;
+            return;
+        }
 
-        // TODO add parameter combination to parameter map file
+        // Add parameter combination to parameter map file
+        int ID = dataLogTable.AddNewID(parameters);
+        manager.pathFromAssets = $"../../data/data - {ID}.txt"; // TODO should be set through inspector
 
-
-        // Set parameters
+        // Initialize manager
         manager.SetParameters(parameters);
-
-        // Init run
         manager.InitManager();
     }
 

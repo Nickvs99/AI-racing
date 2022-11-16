@@ -13,15 +13,7 @@ public class DataLogger
         logMethods = _logMethods;
         path = _path;
 
-        if (!File.Exists(path))
-        {
-            // Create directory to file if it does not exist
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-            // Create file and then close it, which allows text to be written to 
-            // the newly created file
-            File.Create(path).Close();
-        }
+        IO.CreateFile(path);
 
         File.WriteAllText(path, string.Empty);
 
@@ -42,7 +34,7 @@ public class DataLogger
 
     private void WriteLine(string content)
     {
-        File.AppendAllText(path, content + Environment.NewLine);
+        IO.WriteLine(path, content);
     }
 
     public void WriteRowSeparator()

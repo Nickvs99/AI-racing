@@ -42,8 +42,8 @@ public class EvolutionManager : PhysicsExtension
     private int[] layerSizes;
 
     [Header("Data logger")]
-    [SerializeField] private bool loggerEnabled = true;
-    [SerializeField] private string pathFromAssets = "../../data/data.txt";
+    public bool loggerEnabled = true;
+    public string pathFromAssets = "../../data/data.txt";
     [SerializeField] [TextArea(3, 10)] private string customComment = "";
     private DataLogger dataLogger;
 

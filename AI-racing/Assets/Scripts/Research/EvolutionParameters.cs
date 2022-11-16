@@ -31,4 +31,12 @@ public struct EvolutionParameters
         hiddenLayers = _hiddenLayers;
     }
 
+    public override string ToString()
+    {
+        string mostParameters = string.Join(",", new object[] { populationSize, selectionName, weightInitName, biasInitName, activationName,
+                    mutationRate, weightMutateName, biasMutateName });
+        string layers = $"[{string.Join(";", hiddenLayers)}]";
+        
+        return $"{mostParameters},{layers}";
+    }
 }
