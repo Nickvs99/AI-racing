@@ -17,13 +17,13 @@ public class BatchRunner : MonoBehaviour
     public string[] biasInitNames = new string[] { "Default" };
     public string[] activationNames = new string[] { "Default" };
 
-    public float[] mutationValues = new float[] { 0.1f };
+    public float[] mutationRates = new float[] { 0.1f };
     public string[] weightMutateNames = new string[] { "Default" };
     public string[] biasMutateNames = new string[] { "Default" };
 
     public WrapperArray<WrapperArray<int>> hiddenLayersValues;
 
-    private IEnumerable<(int, string, string, string, string, float, string, string, WrapperArray<int>)> permutations;
+    private IEnumerable<EvolutionParameters> permutations;
     private IEnumerator enumerator;
 
     private void Awake()
@@ -61,8 +61,8 @@ public class BatchRunner : MonoBehaviour
             return;
         }
 
-        var (populationSize, selectionName, weightInitName, biasInitName, activationName, mutationValue, weightMutateName, biasMutateName, hiddenLayers) = ((int, string, string, string, string, float, string, string, WrapperArray<int>))enumerator.Current;
-        Debug.Log($"{populationSize}, {selectionName}, {mutationValue}");
+        EvolutionParameters parameters  = (EvolutionParameters) enumerator.Current;
+        Debug.Log($"{parameters.populationSize}, {parameters.selectionName}, {parameters.mutationRate}");
 
         // TODO check if parameter combination exists
 
@@ -70,15 +70,14 @@ public class BatchRunner : MonoBehaviour
 
 
         // Set parameters
-        manager.SetParameters(populationSize, selectionName, weightInitName, biasInitName, activationName,
-            mutationValue, weightMutateName, biasMutateName, hiddenLayers.array);
+        manager.SetParameters(parameters);
 
         // Init run
         manager.InitManager();
     }
 
     // TODO refactor, gosh this is ugly and unmaintainable
-    private IEnumerable<(int, string, string, string, string, float, string, string, WrapperArray<int>)> GetAllPermutations()
+    private IEnumerable<EvolutionParameters> GetAllPermutations()
     {
         foreach(int populationSize in populationSizes)
         {
@@ -90,7 +89,7 @@ public class BatchRunner : MonoBehaviour
                     {
                         foreach(string activationName in activationNames)
                         {
-                            foreach(float mutationValue in mutationValues)
+                            foreach(float mutationValue in mutationRates)
                             {
                                 foreach(string weightMutateName in weightMutateNames)
                                 {
@@ -98,7 +97,8 @@ public class BatchRunner : MonoBehaviour
                                     {
                                         foreach(WrapperArray<int>  hiddenLayers in hiddenLayersValues)
                                         {
-                                            yield return (populationSize, selectionName, weightInitName, biasInitName, activationName, mutationValue, weightMutateName, biasMutateName, hiddenLayers);
+                                            yield return new EvolutionParameters(populationSize, selectionName, weightInitName, biasInitName,
+                                                activationName, mutationValue, weightMutateName, biasMutateName, hiddenLayers.array);
                                         }
                                     }
                                 }

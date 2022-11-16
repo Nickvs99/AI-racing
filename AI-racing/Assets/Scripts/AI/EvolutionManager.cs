@@ -116,18 +116,17 @@ public class EvolutionManager : PhysicsExtension
         display.UpdateOverallField(0f, 0f, 0f);
     }
 
-    public void SetParameters(int _populationSize, string _selectionName, string _weightInitName, string _biasInitName, 
-        string _activationName, float _mutationValue, string _weightMutateName, string _biasMutateName, int[] _hiddenLayers)
+    public void SetParameters(EvolutionParameters parameters)
     {
-        populationSize = _populationSize;
-        selectionName = _selectionName;
-        weightInitName = _weightInitName;
-        biasInitname = _biasInitName;
-        activationName = _activationName;
-        mutateProbability = _mutationValue;
-        weightMutateName = _weightInitName;
-        biasMutateName = _biasMutateName;
-        hiddenLayerSizes = _hiddenLayers;
+        populationSize = parameters.populationSize;
+        selectionName = parameters.selectionName;
+        weightInitName = parameters.weightInitName;
+        biasInitname = parameters.biasInitName;
+        activationName = parameters.activationName;
+        mutateProbability = parameters.mutationRate;
+        weightMutateName = parameters.weightInitName;
+        biasMutateName = parameters.biasMutateName;
+        hiddenLayerSizes = parameters.hiddenLayers;
     }
 
     private void Update()
