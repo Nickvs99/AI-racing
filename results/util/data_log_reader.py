@@ -106,7 +106,7 @@ class DataLogReader:
 
 def main():
     
-    reader = DataLogReader("data/data.txt", types=[int, float, float, float])
+    reader = DataLogReader("../data/data - termination.txt", types=[int, float, float, float])
 
     print(reader.header)
     print(reader.get_run(0))

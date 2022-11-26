@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from data_log_reader import DataLogReader
+from util.data_log_reader import DataLogReader
 
 class DataVisualiser:
 
@@ -81,7 +81,7 @@ def compute_mean_and_std(np_array, axis=0):
 
 def main():
 
-    data_visualizer = DataVisualiser("data/data - multiple.txt")
+    data_visualizer = DataVisualiser("../data/data - termination.txt")
     data_visualizer.plot_a_run(0)
     data_visualizer.plot_all_runs()
     data_visualizer.plot_combined()
