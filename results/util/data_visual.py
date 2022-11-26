@@ -79,6 +79,22 @@ class DataVisualiser:
 def compute_mean_and_std(np_array, axis=0):
     return np.mean(np_array, axis=axis), np.std(np_array, axis=axis)
 
+def set_mpl_font_sizes():
+    SMALL_SIZE = 20
+    MEDIUM_SIZE = 24
+    BIGGER_SIZE = 28
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
+    plt.rcParams["figure.figsize"] = (20,10)
+
+
 def main():
 
     data_visualizer = DataVisualiser("../data/data - termination.txt")
