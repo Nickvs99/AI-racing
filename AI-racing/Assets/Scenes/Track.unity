@@ -1154,7 +1154,7 @@ MonoBehaviour:
   fov: 60
   nrays: 5
   minAgentHeight: -1
-  minSpeed: 0.001
+  minSpeed: 0.1
   minSpeedMaxDuration: 100
   fitnessCheckPeriod: 500
   neuralNetwork:
@@ -1973,7 +1973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04c5b5ed23040a4fa1049b09bcd3a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nRuns: 5
+  nRuns: 10
   display: {fileID: 429990439}
   agent: {fileID: 782720614}
   populationSize: 10
@@ -1981,15 +1981,15 @@ MonoBehaviour:
   weightInitName: Default
   biasInitname: Default
   activationName: SigmoidScaledSmooth
-  terminationName: Short
+  terminationName: Research
   mutateProbability: 0.15
-  weightMutateName: NormalSigmaScaled
-  biasMutateName: NormalSigmaScaled
+  weightMutateName: Default
+  biasMutateName: Default
   fitnesses: []
   generation: 0
   currentAgentIndex: 0
-  useFixedSeed: 0
-  seed: 734833570
+  useFixedSeed: 1
+  seed: 463195068
   hiddenLayerSizes: 04000000
   loggerEnabled: 1
   pathFromAssets: ../../data/data - test.txt
@@ -2753,19 +2753,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2805,11 +2805,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -520.91
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 229.8
       objectReference: {fileID: 0}
     - target: {fileID: 6838917009521066605, guid: 99675c419fe6f26448c44f3e42ac83cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2872,7 +2872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataLogTablePath: ../../data/datatable.txt
   manager: {fileID: 1457292715}
-  populationSizes: 05000000
+  populationSizes: 0a000000
   selectionNames:
   - Default
   weightInitNames:
@@ -2883,8 +2883,6 @@ MonoBehaviour:
   - Default
   mutationRates:
   - 0
-  - 0.15
-  - 0.5
   weightMutateNames:
   - Default
   biasMutateNames:
@@ -2892,7 +2890,6 @@ MonoBehaviour:
   hiddenLayersValues:
     array:
     - array: 
-    - array: 04000000
   fovs:
   - 60
   nrayss: 05000000

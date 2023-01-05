@@ -56,9 +56,12 @@ public class BatchRunner : MonoBehaviour
     private void Update()
     {
         if (manager.hasCompleted)
-        {
-            // Add parameter combination to parameter map file once finished
-            dataLogTable.AddNewID(parameters);
+        {           
+            if(!dataLogTable.CheckFileExists(parameters))
+            {
+                // Add parameter combination to parameter map file once finished
+                dataLogTable.AddNewID(parameters);                
+            }
 
             InitNextExperiment();
         }
