@@ -40,6 +40,6 @@ public static class TerminationTable
         // Read more about it in the termination.ipynb notebook
         int N = 50;
 
-        return avgs.Count > N && avgs[avgs.Count - 1] < avgs[avgs.Count - 1 - N];
+        return avgs.Count > N && avgs[avgs.Count - 1] <= avgs[avgs.Count - 1 - N];
     }
 }
