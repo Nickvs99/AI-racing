@@ -2,9 +2,9 @@
 
 This project aims to implement evolutionary algorithms on a physics-based car controller to produce a self-driving racing car. 
 
-Generation 0 | Generation 50
+Generation 0 | Generation 20
 :-: | :-:
-<video src='docs/gen_0.mp4'> | <video src='docs/gen_50.mp4'/>
+<video src='https://user-images.githubusercontent.com/50055073/210879687-d9fbe7b3-7e55-4b7b-85fc-3155e8246a17.mp4'> | <video src='https://user-images.githubusercontent.com/50055073/210878749-3ea5464a-fa48-4618-8584-ab595055e2da.mp4'/>
 
 The car is controlled through a neural network. The neural network has as input the current speed and $n$ vision rays, which measure the distance until the edge of the track and simulate the sight of the driver. This input is propagated through the neural network by weights, biases and activation functions. Ultimately, this ends at the output layer, which sets the gas pedal, brake pedal and steering input of the car.
 
@@ -23,9 +23,9 @@ These mechanisms are captured through several steps in evolutionary algorithms.
 
 The DNA of the agents are the weights and biases of the neural network. Through mutations, the weights and biases are altered. The fitness of the agent is determined by the amount of distance travelled from its starting point in a fixed time interval. 
 
-## Code structure
-The code is structured in three distinct regions
- - AI-Racing, the unity project, which contains all the assets visualise and run the experiments. There are two scenes available. 
+## Directory structure
+The directory is structured in three distinct regions
+ - AI-Racing, the unity project, which contains all the assets and runs the experiments. There are two scenes available. 
    - "Playground”, which lets you control the car by yourself.
    - "Track”, which contains the logic to perform the EA on the agent. 
  - data, contains the data and a data table, which maps an experiment ID with the parameters it ran with.
