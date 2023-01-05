@@ -61,6 +61,10 @@ public class EvolutionManager : PhysicsExtension
     private void Start()
     {
         InitRNG();
+
+        // TODO: Needs to be a variable
+        //Needed when the evolution manager is not ran through the batchrunner
+        //InitManager();
     }
 
     public void InitManager()
